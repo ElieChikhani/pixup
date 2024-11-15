@@ -1,0 +1,137 @@
+body {
+    background-color: #fefafa;
+}
+.navbar.navbar-expand-sm.navbar-light.bg-light {
+    background-color: rgb(245, 245, 245) !important;
+    margin-bottom:0; 
+    height:50px !important; 
+}
+
+header {
+    position: sticky;
+    top:0; 
+    z-index: 2; 
+    background-color: rgb(245, 245, 245) !important;
+}
+
+.navbar .container {
+    margin-left:0; 
+    margin-right:0; 
+    min-width: 100%;
+    max-width: 100%;
+
+}
+
+#collapsibleNavId {
+    width:100%; 
+}
+
+.navbar .btn.btn-primary{
+    width:8%; 
+    border:none; 
+    border-radius: 10px;
+    margin:0 2px; 
+    font-size:0.8em;
+    text-align: center;
+}
+
+#login {
+    background-color: rgb(0, 0, 0);
+    color:white; 
+}
+
+
+.photo-gallery{
+    max-width: 100%;
+    margin:auto 2%;
+}
+
+.photo-gallery img{
+    transition: filter 0.3s ease;
+}
+
+.photo-gallery img:hover{
+    filter: brightness(60%); 
+}
+
+.error_message {
+    margin : 0 auto;
+    width:50%; 
+    justify-content:center; 
+    justify-items: center;
+}
+
+.gallery-header {
+    display:flex; 
+    justify-content: space-between;
+    margin: 0 2%; 
+}
+
+#search-form {
+    display: flex;
+    margin : 1% 0; 
+    margin-top:0; 
+    padding:1% 2%; 
+    justify-content: space-between;
+    z-index:1; 
+    position: sticky;
+    top:50px; 
+    background-color: #fefafa8f !important;
+    backdrop-filter: blur(10px);
+}
+
+#search-bar {
+    width: 80%;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#search-bar:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#order-select {
+    font-size: 14px;
+    width:20%; 
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+}
+
+.photo-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.grid-item {
+    width: calc(33.333% - 10px); 
+    margin-bottom: 10px; 
+    margin : 5px 5px; 
+    overflow: hidden;
+}
+
+
+.grid-item img {
+    width: 100%; 
+    height: auto; 
+    max-width: 100%; 
+    object-fit: cover; 
+    border-radius: 5px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+
+
+
+
+
+
+
+
+
+

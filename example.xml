@@ -1,0 +1,25 @@
+
+<!DOCTYPE user [
+<!ELEMENT user (username, email, password, album+)> 
+<!ELEMENT username (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT password (#PCDATA)>
+<!ELEMENT album (title, image*)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT image (Imagetitle,description,category+)>
+<!ELEMENT Imagetitle (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT category (#PCDATA)> 
+]>
+
+<user>
+
+<username> eliechikhani </username>
+<email> eliechikhani90@gmail.com </email>
+<password> azsxdcfv </password>
+<album> 
+    <title> Album1 </title>
+</album>
+
+
+</user>

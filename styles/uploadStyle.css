@@ -1,0 +1,75 @@
+.upload-title {
+    background-color: rgba(202, 202, 255, 0.538);
+    margin-bottom:0px !important; 
+    height:200px;
+}
+
+.upload-title .container-fluid{
+    padding: 0px !important;
+    text-align: center;
+    justify-items: center;
+}
+
+form label {
+    font-weight: bold;
+}
+
+#upload-section {
+   margin:0 5%; 
+   padding:2%;
+   position:relative; 
+}
+
+#image-upload {
+    margin-top:1%; 
+}
+
+#drop-area {
+    text-align: center;
+    width:100%;
+    height:400px;
+}
+
+#img-view {
+    border-radius: 20px; 
+    border: 2px dashed #bbb5ff; 
+    background-color: #f7f8ff;
+    background-position:center;
+    background-size: center;
+    background-repeat: no-repeat;
+    height:100%;
+    width:100%; 
+    display:flex; 
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    color:grey;
+   
+}
+
+#img-view img{
+    width:200px; 
+}
+
+#img-view i{
+    font-size: 150px;
+}
+
+#image-upload-form{
+    display: block;
+}
+
+#image-description-form {
+    display:none; 
+}
+
+.list-group {
+    margin-bottom:2%; 
+}
+
+.control-buttons {
+    display:flex; 
+}
+

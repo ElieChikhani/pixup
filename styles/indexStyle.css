@@ -1,0 +1,40 @@
+.welcome {
+    background-color: rgb(245, 245, 245);
+    display:flex; 
+    align-items: center;
+}
+
+.welcome img {
+    width:350px;
+    margin-right:9%; 
+}
+
+.photo-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.grid-item {
+    width: calc(33.333% - 10px); 
+    margin-bottom: 10px; 
+    margin : 5px 5px; 
+    overflow: hidden;
+}
+
+
+.grid-item img {
+    width: 100%; 
+    height: auto; 
+    max-width: 100%; 
+    object-fit: cover; 
+    border-radius: 5px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+
+
+
+
+
+
