@@ -85,19 +85,18 @@
 
 
     
-    <form id="image-upload-form">
+    <form id="image-upload-form" action="dbModule/uploadImage.php" method="POST" novalidate class="needs-validation">
         <div class="mb-3">
             <label for="title" class="form-label">Image Title</label>
             <input
                 type="text"
                 class="form-control"
                 name="title"
-                id="title"
                 aria-describedby="helpId"
                 placeholder=""
                 required
             />
-            <small id="helpId" class="form-text text-muted">Keep it small and simple</small>
+          <div class="invalid-feedback"> You must provide a title for your image </div>
         </div>
 
         <label> Upload your image here </label>
@@ -112,6 +111,7 @@
                 aria-describedby="fileHelpId"
                 accept=".jpg, .jpeg, .png, .gif"
                 hidden
+                required
             />
 
             <div id="img-view">
@@ -120,17 +120,21 @@
 
             </div>
 
+            <div class="invalid-feedback"> You must upload your image here.</div>
        
         </label>
+
+       
+
         </div> 
 
         <div class="mb-3">
             <label for="image-descrption" class="form-label"> Describe your image in few words </label>
-            <textarea class="form-control" name="image-descrption" id="image-descrption" rows="3"></textarea>
+            <textarea class="form-control" name="image-descrption" id="image-descrption" rows="3" maxlength="500"></textarea>
+            <small id="char-count"> 500 characters left </small> 
         </div>
 
-        <label> Include in these albums :  </label>
-       <div class="list-group">
+
 
        <?php 
 
@@ -147,33 +151,43 @@
             die("Connection failed: " . $conn->connect_error);
         }
 
-        $sql = "SELECT album_id, album_name FROM albums WHERE user_id = $user_id"; 
+        $sql = "SELECT album_id, album_name FROM albums WHERE user_id = $user_id AND album_name <> 'All'"; 
         $result = $conn->query($sql);
         $albums = array();
 
-        while ($row = $result->fetch_assoc()) {
-            $albmus[$row['album_id']] = $row['album_name'];
-        }
+        if($result->num_rows>0){
 
-        foreach ($albmus as $album_id => $album_name) {
+            echo "
+             <label id='album_select_label'> Include in these albums :  </label>
+             <div class='list-group'>
+            ";
+
+         while ($row = $result->fetch_assoc()) {
+            $albums[$row['album_id']] = $row['album_name'];
+         }
+
+        foreach ($albums as $album_id => $album_name) {
             echo "
              <label class='list-group-item'>
-            <input class='orm-check-input me-1' type='checkbox' value='$album_id' />
-            $album_name
+            <input class='orm-check-input me-1' type='checkbox' value='$album_id'/>
+            $album_name 
             </label>
             ";
         }
 
+        echo "</div>";
+
+        }
+
        ?>
-       </div>
+    
 
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" name="terms_check" id="terms_check" />
+            <input class="form-check-input" type="checkbox" name="terms_check" id="terms_check" required />
             <label class="form-check-label" for="terms_check"> I accept that this image will be accessed publically and might be subject for AI training since it will be categorized by an AI model </label>
+            <div class="invalid-feedback"> You must agree before submitting.</div>
         </div>
 
-       
-    
         <div class="d-grid gap-2">
             <button
             id="done-button"

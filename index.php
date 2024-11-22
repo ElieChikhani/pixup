@@ -19,22 +19,6 @@
 
 <body>
 
-     <?php 
-     //updating all the searching parameters :
-     global $search; 
-     global $order;
-
-     if($_SERVER['REQUEST_METHOD'] == "POST") {
-        $GLOBALS['search'] = htmlspecialchars($_POST['search']);
-        $GLOBALS['order'] = htmlspecialchars($_POST['order']);
-     } else {
-        $GLOBALS['search']= '';
-        $GLOBALS['order'] = 'recent'; //default ordering at first load of the page 
-     }
-  
-     ?>
-
-
     <header>
 
         <nav class="navbar navbar-expand-sm navbar-light bg-light">
@@ -98,67 +82,39 @@
 
         <img src="webPictures/welcome.png">
       </div>
+
+      <?php
       
-        
+      //FOR IMAGE GRID
+      if($_SERVER['REQUEST_METHOD'] == "POST") {
+         $search = htmlspecialchars($_POST['search']);
+         $order = htmlspecialchars($_POST['order']);
+      } else {
+         $search= '';
+         $order = 'recent'; //default ordering at first load of the page 
+      }
 
-          
+      ?>
+
+    <form id='search-form' action='<?php $_SERVER['PHP_SELF'] ?>' method = 'POST'>
+
+    <input id='search-bar' class='form-control me-sm-2' type='text'
+    placeholder='Search for photos' name='search' value='<?php echo $search?>'/>
+
+     <select class='form-select form-select-lg' name='order' id='order-select'>
+     <option <?php echo ($order === 'recent') ? 'selected': ''?> value='recent'>Recent</option>
+     <option <?php echo ($order === 'popular') ? 'selected':''?> value='popular'>Most Popular</option>
+     </select>
+
+     </form>
+
+   
+
+      <?php
        
-
-          
-
-           <form id="search-form" action ="<?php echo $_SERVER['PHP_SELF']; ?>" method ="POST">
-
-           <input id="search-bar" class="form-control me-sm-2" type="text"
-            placeholder="Search for photos" name="search" value="<?php echo $search ?>" />
-
-            <select
-                class="form-select form-select-lg"
-                name="order"
-                id="order-select">
-                <option <?php echo ($order === 'recent') ? 'selected': ''?> value="recent">Recent</option>
-                <option <?php echo ($order === 'popular') ? 'selected':''?> value="popular">Most Popular</option>
-            </select>
-           
-           </form>
-     
-
-            <?php
-            $searchTerm = $GLOBALS['search']; 
-            $order = $GLOBALS['order'];
-            $searchURL = "http://localhost/PIXUP/dbModule/search.php?order=$order";
-            if (!empty($searchTerm)) $searchURL .= "&category=$searchTerm";
-
-            $response = file_get_contents($searchURL);
-          
-            if ($response === false) {
-                die("Error fetching the JSON data.");
-            }
-
-            $images = json_decode($response, true);
-
-            if (!isset($images['success']) || !$images['success'] || empty($images['data'])) {
-                echo "
-                    <div class='error_message'>
-                    <img src='webPictures/notFound.png' width=300px>
-                    <h3> Coudn't find what you're looking for ! </h3>
-                     <p> Try searching again with more specific key words </p>
-                     </div>
-                ";
-            }else {
-
-                echo "<div class='photo-gallery'>";
-                foreach ($images['data'] as $image) {
-                    $image_id = $image['image_id'];
-                    $path = 'images/' . $image_id;
-                    echo "<div class='grid-item'><img src='$path' id='image.$image_id'></div>";
-                }
-                echo "</div>";
-
-            }
-          
-?>
-
-
+      include 'components/imageGrid.php' ?>
+      <!-- ------  -->
+      
     </main>
     <footer>
 

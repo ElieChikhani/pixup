@@ -69,7 +69,11 @@ form label {
     margin-bottom:2%; 
 }
 
-.control-buttons {
-    display:flex; 
+#album_select_label{
+    margin-bottom:3px;
+}
+
+#done-button {
+    margin-top: 10px;
 }
 
