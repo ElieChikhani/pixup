@@ -111,19 +111,35 @@
    
 
       <?php
-       
+
       include 'components/imageGrid.php' ?>
       <!-- ------  -->
+
       
+
+
+       
+        
+    </div>
+      </div>
+    </div>
+    </div>
+   
+    
+
     </main>
+
     <footer>
 
     </footer>
 
-    <!-- Include Masonry.js for grid layout-->
+    <!--Masonry.js for grid layout-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
 
-    <script src="scripts/allGridScript"></script>
+    <!--check the loading state of an image-->
+    <script src="https://unpkg.com/imagesloaded/imagesloaded.pkgd.min.js"></script>
+
+    <script src="scripts/allGridScript.js"></script>
 
 
     <!-- Bootstrap JavaScript Libraries -->

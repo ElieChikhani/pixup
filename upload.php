@@ -59,9 +59,6 @@
 
     </header>
     <main>
-
-
-
         <div class="p-5 mb-4 upload-title">
             <div class="container-fluid py-5">
                 <h1 class="display-5 fw-bold">Upload Image</h1>
@@ -73,7 +70,7 @@
         </div>
 
 
-    <section id="upload-section">
+     <section id="upload-section">
 
         <h3> Fill this form correctly in order to upload your picture </h3>
         <div
@@ -85,15 +82,14 @@
 
 
     
-    <form id="image-upload-form" action="dbModule/uploadImage.php" method="POST" novalidate class="needs-validation">
+    <form id="image-upload-form" action="dbModule/uploadImage.php" method="POST" enctype="multipart/form-data" novalidate class="needs-validation">
         <div class="mb-3">
             <label for="title" class="form-label">Image Title</label>
             <input
                 type="text"
                 class="form-control"
-                name="title"
+                name="image-title"
                 aria-describedby="helpId"
-                placeholder=""
                 required
             />
           <div class="invalid-feedback"> You must provide a title for your image </div>
@@ -130,7 +126,7 @@
 
         <div class="mb-3">
             <label for="image-descrption" class="form-label"> Describe your image in few words </label>
-            <textarea class="form-control" name="image-descrption" id="image-descrption" rows="3" maxlength="500"></textarea>
+            <textarea class="form-control" name="image-description" id="image-description" rows="3" maxlength="500"></textarea>
             <small id="char-count"> 500 characters left </small> 
         </div>
 
@@ -169,7 +165,7 @@
         foreach ($albums as $album_id => $album_name) {
             echo "
              <label class='list-group-item'>
-            <input class='orm-check-input me-1' type='checkbox' value='$album_id'/>
+            <input class='orm-check-input me-1' type='checkbox' value='$album_id' name='albums[]'/>
             $album_name 
             </label>
             ";

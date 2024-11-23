@@ -6,19 +6,10 @@
  */
 
 // Connect to the database
-$host = 'localhost';
-$db = 'pixup';
-$user = 'root';
-$pass = '';
-
-$conn = new mysqli($host, $user, $pass, $db);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'connectToDB.php'; 
 
 // Query parts
-$sql = "SELECT i.image_id FROM images i";
+$sql = "SELECT * FROM images i";
 $categoryJoin = '';
 $conditions = [];
 $types = ""; // parameters type
@@ -30,6 +21,8 @@ $user_id = isset($_GET['user_id']) ? (int)$_GET['user_id'] : null;
 $saved = isset($_GET['saved']) ? (bool)$_GET['saved'] : false; //must come with userID
 $category = isset($_GET['category']) ? $_GET['category'] : null;
 $order = isset($_GET['order']) ? $_GET['order'] : 'recent';
+
+
 $categoryJoin="";
 $savedJoin="";
 $albumJoin=""; 
@@ -60,6 +53,7 @@ if (!empty($user_id)) {
         $values[] = $user_id;
     }
 }
+
 
 // The WHERE clause
 if (!empty($conditions)) {
@@ -96,7 +90,7 @@ if (!$stmt->execute()) {
 $result = $stmt->get_result();
 $images = [];
 while ($row = $result->fetch_assoc()) {
-    $images[] = $row;
+    $images[$row["image_id"]] = $row["path"];
 }
 
 // Prepare the response

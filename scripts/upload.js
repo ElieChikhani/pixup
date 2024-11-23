@@ -57,7 +57,7 @@ Array.from(forms).forEach(form => {
 
 //character count in text file 
 const charCount=document.getElementById("char-count"); 
-const textArea = document.getElementById("image-descrption");
+const textArea = document.getElementById("image-description");
 const TEXTLIMIT = 500; 
 
 textArea.addEventListener("input", () => {

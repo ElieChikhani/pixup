@@ -1,5 +1,5 @@
 <?php
-$searchURL = "http://localhost/PIXUP/dbModule/searchImage.php?order=$order";
+$searchURL = "http://localhost/PIXUP/dbModule/searchImage.php?order=$order"; //which is our db module that searches for the list of images. 
 if (!empty($search)) $searchURL .= "&category=$search";
 if (!empty($album_id)) $searchURL .= "&album_id=$album_id";
 if (!empty($user_id)) $searchURL .= "&user_id=$user_id";
@@ -24,13 +24,13 @@ if (!isset($images['success']) || !$images['success'] || empty($images['data']))
 }else {
 
     echo "<div class='photo-gallery'>";
-    foreach ($images['data'] as $image) {
-        $image_id = $image['image_id'];
-        $path = 'images/' . $image_id;
-        echo "<div class='grid-item'><img src='$path' id='image$image_id'></div>";
+    foreach ($images['data'] as $image_id => $image_path) {
+        echo "<div class='grid-item'><img src='$image_path' id='image$image_id'></div>";
     }
     echo "</div>";
 
 }
+
+include 'imageInfo.php'; 
 
 ?>
