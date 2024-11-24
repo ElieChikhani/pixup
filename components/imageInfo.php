@@ -16,7 +16,8 @@
        
 
         <p id='description'></p>
-        <p id='saved-count'> </p>
+        <div id="saves"> <i class="fas fa-heart"> </i> Saves : <span id='saved-count'> </span> </div>
+
         <div id='image-tags'>
           
         </div>

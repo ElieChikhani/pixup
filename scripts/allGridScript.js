@@ -61,7 +61,7 @@ function displayImageInfoPopup(isLoggedIn,isOwner,image_id,title,path,username,d
     document.getElementById('image-title').innerText = title; 
     document.getElementById('by').innerText = 'By '+ username;
     document.getElementById('description').innerText = description;
-    document.getElementById('saved-count').innerText = `Saved by ${savedCount} users`;
+    document.getElementById('saved-count').innerText = savedCount;
     document.getElementById('upload-date').innerText = 'Uploaded on '+ uploadDate;
     document.getElementById('image-popup').style.display='flex'; 
 

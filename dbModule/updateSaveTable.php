@@ -22,13 +22,15 @@ if ($result->num_rows > 0) {
 
 if(!$saved){
     $sql="INSERT INTO save_image(image_id,user_id) VALUES ($image_id,$user_id)"; 
+    $update_sql = "UPDATE images SET savedCount = savedCount + 1 WHERE image_id = $image_id "; 
     $action = 'saved';
 }else {
     $sql="DELETE FROM save_image WHERE image_id = $image_id AND user_id = $user_id"; 
+    $update_sql = "UPDATE images SET savedCount = savedCount - 1 WHERE image_id = $image_id "; 
     $action = 'unsaved';
 }
 
-if ($conn->query($sql) === TRUE && $conn->affected_rows>0) {
+if ($conn->query($sql) === TRUE && $conn->query($update_sql) === TRUE && $conn->affected_rows>0) {
     $response = ['success' => true,
                  'action'=>$action];
 }else {

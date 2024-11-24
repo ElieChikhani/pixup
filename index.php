@@ -19,63 +19,25 @@
 
 <body>
 
-    <header>
 
-        <nav class="navbar navbar-expand-sm navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand" href="#"> <i class="fas fa-camera-retro"> </i> PixUp</a>
-                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="collapsibleNavId">
-                    <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="index.php" aria-current="page">Home</a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="albums.php">Albums</a>
-                        </li>
+    <?php  
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="saved.php">Saved</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="upload.php">Upload</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="creators.php">Creators</a>
-                        </li>
-
-                    </ul>
-                   
-
-                        <a id="signin" class="btn btn-primary" href="#" role="button">Sign in</a>
-
-                        <a id="login" class="btn btn-primary" href="#" role="button">Log in</a>
-
+    if(!isset($_SESSION)) session_start(); 
     
-                </div>
-            </div>
-        </nav>
+    $_SESSION['user_id']=2; 
+    $_SESSION['username']='clararezkallah';
+    
 
-    </header>
+    include 'components/header.php'; ?>
     <main>
 
 
       <div class="p-5 mb-4 welcome">
         <div class="container-fluid py-5">
-            <h1 class="display-5 fw-bold">Welcome, visitor !</h1>
-            <p class="col-md-8 fs-4">
+            <h1 class="display-5 fw-bold" id="welcome-message">Welcome, visitor !</h1>
+            <p class="col-md-8 fs-4" id="welcome-info">
                 Here lays the art of "drawing with light" pretty much known as Photography...
-            </p>
-
-            <p class="col-md-8 fs-6">
-                Explore the most creative pictures shared by people around the globe and you can share yours too !
             </p>
 
         </div>
@@ -115,10 +77,6 @@
       include 'components/imageGrid.php' ?>
       <!-- ------  -->
 
-      
-
-
-       
         
     </div>
       </div>

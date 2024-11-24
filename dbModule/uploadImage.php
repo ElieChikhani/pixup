@@ -34,10 +34,11 @@
        include 'connectToDB.php'; 
 
        
-        $sql = "INSERT INTO images(title,description) VALUES('$title','$description')";
+        $sql = "INSERT INTO images(title,description,user_id) VALUES('$title','$description',$user_id)";
 
         if (!($conn->query($sql) === TRUE)) {
             echo "Error inserting database: " . $conn->error;
+            exit; 
         }
 
         //getting the id of the just inserted image : 
@@ -85,6 +86,13 @@
             }
         }
 
+        //increment the imageCount 
+        $sql = "UPDATE users SET imageCount = imageCount + 1 WHERE user_id = $user_id"; 
+        if (!($conn->query($sql) === TRUE)) {
+            echo "Error incrementing imageCount: " . $conn->error;
+        }
+
+
 
         //add the image to the directory : 
         $uploadDir = '../images/';
@@ -102,6 +110,9 @@
         } else {
             echo "Error moving the uploaded file.";
         }
+
+         //categories the image
+         include 'categoriesImage.php'; 
         
     }else {
         echo "No file uploaded or there was an upload error.";

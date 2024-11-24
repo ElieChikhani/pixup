@@ -18,46 +18,15 @@
 </head>
 
 <body>
-    <header>
+   
+    <?php 
+    session_start();
 
-        <nav class="navbar navbar-expand-sm navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand" href="#"> <i class="fas fa-camera-retro"> </i> PixUp</a>
-                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="collapsibleNavId">
-                    <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" aria-current="page">Home </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Albums</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Saved</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Upload</a>
-                         
-                        </li>
-
-                    </ul>
-                   
-                </div>
-            </div>
-        </nav>
+    include 'components/header.php';
+    include 'components/signinrequired.php'
+    ?>
 
 
-
-
-
-    </header>
     <main>
         <div class="p-5 mb-4 upload-title">
             <div class="container-fluid py-5">
@@ -134,44 +103,50 @@
 
        <?php 
 
-        $user_id=2; 
+        $user_id=$_SESSION['user_id'];
+        
+        if(!empty($user_id)){
 
-        $host = 'localhost';
-        $db = 'pixup';
-        $user = 'root';
-        $pass = '';
+        //calling the searchAlbum to search for albums
+        $searchURL = "http://localhost/PIXUP/dbModule/searchAlbum.php?user_id=$user_id";
+        $searchResponse = file_get_contents($searchURL);
 
-        $conn = new mysqli($host, $user, $pass, $db);
-
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+        if ($searchResponse === false) {
+            die("Error: Unable to fetch data from the URL: $searchURL");
         }
 
-        $sql = "SELECT album_id, album_name FROM albums WHERE user_id = $user_id AND album_name <> 'All'"; 
-        $result = $conn->query($sql);
-        $albums = array();
+        $searchData = json_decode($searchResponse, true);
 
-        if($result->num_rows>0){
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            die("Error: Failed to decode JSON. " . json_last_error_msg());
+        }
+
+        if($searchData['status']==="success"){
 
             echo "
              <label id='album_select_label'> Include in these albums :  </label>
              <div class='list-group'>
             ";
 
-         while ($row = $result->fetch_assoc()) {
-            $albums[$row['album_id']] = $row['album_name'];
-         }
+        $albums = $searchData['albums']; 
+        foreach ($albums as $album) {
+            $album_id = $album['album_id'];
+            $album_name = $album['album_name'];
 
-        foreach ($albums as $album_id => $album_name) {
+            //the all album will include the new image regardless if the user accepts or not so it is not included in the choice
+            if($album_name != 'All'){
             echo "
              <label class='list-group-item'>
             <input class='orm-check-input me-1' type='checkbox' value='$album_id' name='albums[]'/>
             $album_name 
             </label>
             ";
+            }
         }
 
         echo "</div>";
+
+    }
 
         }
 

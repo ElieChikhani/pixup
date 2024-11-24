@@ -1,8 +1,11 @@
 body {
-    background-color: #fefafa;
-}
+    margin: 0;
+    background-color: hsl(218, 81%, 95%);
+
+  }
+  
 .navbar.navbar-expand-sm.navbar-light.bg-light {
-    background-color: rgb(245, 245, 245) !important;
+    background-color: hsl(218, 81%, 95%) !important; 
     margin-bottom:0; 
     height:50px !important; 
 }
@@ -10,9 +13,8 @@ body {
 header {
     position: sticky;
     top:0; 
-    z-index: 2; 
-    background-color: rgb(245, 245, 245) !important;
-    color:#02005c !important; 
+    background-color: hsl(218, 81%, 95%) !important; 
+    z-index:1; 
 }
 
 .navbar .container {
@@ -20,6 +22,7 @@ header {
     margin-right:0; 
     min-width: 100%;
     max-width: 100%;
+   
 
 }
 
@@ -36,6 +39,11 @@ header {
     text-align: center;
 }
 
+.navbar-brand {
+    color:rgb(71, 3, 110); 
+    font-weight: bold;
+}
+
 #login {
     background-color: rgb(0,0,128);
     color:white; 
@@ -43,6 +51,15 @@ header {
 
 #signin {
     background-color: rgb(64, 0, 107);
+}
+
+#profile-button {
+    border:none;
+    padding:5px; 
+    background-color: rgba(119, 119, 255, 0.27);
+    border-radius:5px; 
+    color:rgb(71, 3, 110); 
+    font-weight: bold;
 }
 
 
@@ -81,7 +98,7 @@ header {
     z-index:1; 
     position: sticky;
     top:50px; 
-    background-color: #fefafa8f !important;
+    background-color: hsla(220, 84%, 95%, 0.557);
     backdrop-filter: blur(10px);
 }
 
@@ -95,8 +112,8 @@ header {
 }
 
 #search-bar:focus {
-    border-color: rgb(64, 0, 107);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: rgba(218, 163, 255, 0.482);
+    box-shadow: 0 4px 8px rgb(205, 130, 255);
 }
 
 #order-select {
@@ -105,6 +122,11 @@ header {
     border: 1px solid #ddd;
     border-radius: 10px;
     outline: none;
+}
+
+#order-select:focus {
+    border-color: rgba(218, 163, 255, 0.482);
+    box-shadow: 0 4px 8px rgb(205, 130, 255);
 }
 
 .photo-gallery {
@@ -197,7 +219,7 @@ header {
    margin:0 auto; 
 }
 
-.popup-body .textual-content #saved-count{
+.popup-body .textual-content #saves{
     text-align:start; 
     margin-top:1%; 
     color:#02005c; 
@@ -211,8 +233,10 @@ header {
 }
 
 .popup-body .textual-content #image-tags .tag{
-    margin-right: 2%; 
-    background-color: #ddd; 
+    margin-right: 2%;
+    margin-bottom: 2%;  
+    background-color: #02005c85; 
+    color:white; 
     border-radius: 5px;
     padding: 0 1%; 
 }
@@ -261,7 +285,30 @@ header {
 
 .unsave {
     background-color: rgb(60, 60, 60);
-    content:'Unsave'
+   content:'Unsave'
+}
+
+#not-signed-in-message{
+    height:90vh; 
+    align-content: center;
+    text-align: center;
+    background-color: hsl(218, 81%, 95%);
+
+}
+
+#not-signed-in-message h1{
+    color : rgb(64, 0, 107);
+    font-size: 2em;
+}
+
+#not-signed-in-message a{
+    text-decoration: none;
+    color:#02005c; 
+}
+
+#not-signed-in-message a:hover{
+    text-decoration: none;
+    color : rgb(64, 0, 107);
 }
 
 

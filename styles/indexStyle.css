@@ -1,14 +1,40 @@
 .welcome {
-    background-color: rgb(245, 245, 245);
-    display:flex; 
+    display: flex;
     align-items: center;
+    color:#4d4d4d;
+    /*
+    background-image: 
+    radial-gradient(50px circle at 10% 20%, 
+        hsl(218, 61%, 85%) 15%, 
+        hsl(218, 61%, 80%) 35%, 
+        hsl(218, 61%, 75%) 75%, 
+        hsl(218, 45%, 75%) 80%, 
+        transparent 100%),
+    radial-gradient(100px circle at 80% 30%, 
+        hsl(218, 71%, 90%) 15%, 
+        hsl(218, 71%, 88%) 35%, 
+        hsl(218, 71%, 85%) 75%, 
+        hsl(218, 71%, 82%) 80%, 
+        transparent 100%),
+    radial-gradient(100px circle at 50% 70%, 
+        hsl(218, 61%, 85%) 15%, 
+        hsl(218, 61%, 80%) 35%, 
+        hsl(218, 61%, 75%) 75%, 
+        hsl(218, 45%, 75%) 80%, 
+        transparent 100%);
+    */
+    
+
+}
+
+#welcome-message {
+    color:rgb(71, 3, 110); 
 }
 
 .welcome img {
     width:350px;
     margin-right:9%; 
 }
-
 
 
 

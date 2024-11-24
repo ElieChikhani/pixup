@@ -29,9 +29,9 @@ $albumJoin="";
 
 if (!empty($category)) {
     $categoryJoin = " NATURAL JOIN category_image c ";
-    $conditions[] = "c.category = ?";
+    $conditions[] = "c.category LIKE ?";
     $types .= "s";
-    $values[] = $category;
+    $values[] = '%'.$category.'%';
 }
 
 if (!empty($album_id)) {
@@ -97,13 +97,11 @@ while ($row = $result->fetch_assoc()) {
 if ($result->num_rows === 0) {
     $response = [
         "success" => false,
-        "sql" => $sql,
         "message" => "No results found."
     ];
 } else {
     $response = [
         "success" => true,
-        "sql" => $sql,
         "data" => $images
     ];
 }
