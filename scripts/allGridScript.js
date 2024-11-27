@@ -21,79 +21,56 @@ document.addEventListener("DOMContentLoaded", function() {
         image.addEventListener('click', function(event){ 
 
             image_id=event.target.id.replace('image',"");
-            fetch(`dbModule/getImageInfo.php?image_id=${image_id}`)
+            fetch(`components/imageInfo.php?image_id=${image_id}&action=open`)
             .then(response => {
                  if (!response.ok) {
                      throw new Error(`HTTP error! Status: ${response.status}`);
                  }
-            return response.json(); // Parse the JSON response
+            return response.text(); // it's a text containing the content of the html
             })
             .then(data => {
-                console.log(data); 
-               if(data.success) {
-                displayImageInfoPopup(data.data.isLoggedIn,data.data.isOwner,data.data.image_id,data.data.title,data.data.path,
-                    data.data.username,data.data.description,data.data.savedCount,data.data.upload_date,data.data.tags,data.data.saved); 
-               }
-                
-                
+                let popup = document.getElementsByClassName('popup')[0]
+                popup.style.display='flex'; 
+                popup.innerHTML = data; 
+
+                 //event listener for save button 
+                const save_button=document.getElementsByClassName('save-button')[0]; 
+                if(save_button){
+                    save_button.addEventListener('click',()=>{
+                    handleImageSave(save_button)
+                })}
+
+                 //event listener for remove button 
+                    const close_button=document.getElementById('image-popup-close');
+                    close_button.addEventListener('click',()=>{
+                        handlePopupClosure(popup); 
+                 }); 
+
+                 //add event listener on delete button 
+                 const delete_button=document.getElementsByClassName('delete-button')[0];
+                 if(delete_button){
+                    delete_button.addEventListener('click',()=>{
+                        handleImageDelete()
+                    })
+                 }
             })
             .catch(error => {
             console.error('Error fetching data:', error); // Handle any errors
              });
 
-          })
-    }); 
-    
-});
-
-
-const save_button=document.getElementsByClassName('save-button')[0]; 
-save_button.addEventListener('click',()=>{
-    handleImageSave(save_button)
  }); 
+
+     })
+    }); 
+
+
+    
+
 
 //the search query should be submitted automatically when the ordering changes 
 document.getElementById("order-select").addEventListener('change',()=>{
     document.getElementById("search-form").submit(); 
 })
-
-function displayImageInfoPopup(isLoggedIn,isOwner,image_id,title,path,username,description,savedCount,uploadDate,tags,saved){
-    document.getElementById('image-title').innerText = title; 
-    document.getElementById('by').innerText = 'By '+ username;
-    document.getElementById('description').innerText = description;
-    document.getElementById('saved-count').innerText = savedCount;
-    document.getElementById('upload-date').innerText = 'Uploaded on '+ uploadDate;
-    document.getElementById('image-popup').style.display='flex'; 
-
-    let image_element = document.getElementsByClassName('popupImage')[0];
-    image_element.src = path;
-    image_element.id = 'popupImage'+image_id;
-
-    let tags_container = document.getElementById('image-tags');
-    tags_container.innerHTML = ""; //clearing the container
-
-    tags.forEach(tag => {
-        let tag_container = document.createElement('div'); 
-        tag_container.className = 'tag'; 
-        tag_container.innerText = tag;
-        tags_container.appendChild(tag_container); 
-    })
-
-     //adding event listener to close 
-     document.getElementById('image-popup-close').addEventListener('click',()=>{
-        document.getElementById('image-popup').style.display='none';
-    }); 
-
-    //if the image is not owned by the user allow the display of save button 
-    if(!isOwner&&isLoggedIn) {
-    save_button.style.display='block'; 
-    setSaveButtonState(save_button,saved);
-
-   }else{
-    save_button.style.display='none'; 
-   }
-
-}
 
 function setSaveButtonState(save_button,saved){
     if(saved){
@@ -106,35 +83,62 @@ function setSaveButtonState(save_button,saved){
 
 }
 
-function handleImageSave(save_button){
+function handleImageSave(save_button) {
+    // Getting image ID of the image being currently displayed
 
-    //getting image id of the image being currently displayed
-    let image_id = document.getElementsByClassName('popupImage')[0].id.replace("popupImage","");
-
-
-    fetch(`dbModule/updateSaveTable.php?image_id=${image_id}`)
+    fetch('dbModule/updateSaveTable.php', {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json', 
+        },
+    })
     .then(response => {
-         if (!response.ok) {
-             throw new Error(`HTTP error! Status: ${response.status}`);
-         }
-    return response.json(); // Parse the JSON response
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json(); 
     })
     .then(data => {
-       if(data.success) {
-
-         if(data.action==='saved'){
-            setSaveButtonState(save_button,true); 
-         }else {
-            setSaveButtonState(save_button,false);
-         }
-       }
-        
+        if (data.success) {
+            if (data.action === 'saved') {
+                setSaveButtonState(save_button, true);
+            } else {
+                setSaveButtonState(save_button, false);
+            }
+        }else {
+            console.log(data);
+        }
     })
     .catch(error => {
-    console.error('Error fetching data:', error); // Handle any errors
-     });
-
+        console.error('Error fetching data:', error); // Handle any errors
+    });
 }
+
+function handleImageDelete (){
+    fetch('dbModule/deleteImage.php', {
+        method: 'POST'
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json(); 
+    })
+    .then(data => {
+        console.log('Request succeeded:', data);
+    })
+    .catch(error => {
+        console.error('An error occurred:', error);
+    });
+
+    location.reload(); 
+}
+
+function handlePopupClosure (popup){
+    popup.style.display='none'; 
+    fetch(`components/imageInfo.php?action=close`); //clear the image tracking
+}
+
+
 
 
 

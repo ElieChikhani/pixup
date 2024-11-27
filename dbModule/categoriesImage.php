@@ -35,13 +35,11 @@ if(isset($tag_result['status']['type'])&&$tag_result['status']['type']==="succes
     }
 
     //adding the tag to the image's info in database
-
-    //connection must be a;relady ope in files including this file (same for image id)
-    if($conn){
+    //connection must be alrelady open in files including this file (same for image id)
         foreach($tag_list as $tag) {
             $sql = "INSERT INTO category_image (image_id, category) VALUES ('$image_id','$tag')"; 
             if (!($conn->query($sql) === TRUE)) {
-                echo "Error incrementing imageCount: " . $conn->error;
+                echo "Error adding category: " . $conn->error;
                 break;
             }
         }
@@ -51,7 +49,7 @@ if(isset($tag_result['status']['type'])&&$tag_result['status']['type']==="succes
 }else {
     echo "Failed to get tags";
 }
-}
+
 
 
 ?>

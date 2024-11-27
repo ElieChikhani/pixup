@@ -65,7 +65,7 @@ if (!empty($conditions)) {
 //Setting the ORDER BY clause
 $orderBy = '';
 if ($order === 'recent') {
-    $orderBy = " ORDER BY image_id DESC";
+    $orderBy = " ORDER BY i.image_id DESC";
 } elseif ($order === 'popular') {
     $orderBy = " ORDER BY savedCount DESC";
 }
@@ -102,7 +102,8 @@ if ($result->num_rows === 0) {
 } else {
     $response = [
         "success" => true,
-        "data" => $images
+        "data" => $images,
+        "numberOfImages" => $result->num_rows
     ];
 }
 

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>PixUp</title>
+    <title>Upload</title>
   
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -14,38 +14,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <link href="styles/generalStyle.css" rel="stylesheet" />
-    <link href="styles/indexStyle.css" rel="stylesheet" />
 </head>
 
 <body>
+   
+    <?php 
+    session_start();
+
+    include 'components/header.php';
+    include 'components/signinrequired.php'
+    ?>
 
 
-
-    <?php  
-
-    if(!isset($_SESSION)) session_start(); 
-    
-    $_SESSION['user_id']=1; 
-    $_SESSION['username']='eliechikhani';
-    
-
-    include 'components/header.php'; ?>
     <main>
-
-
-      <div class="p-5 mb-4 welcome">
-        <div class="container-fluid py-5">
-            <h1 class="display-5 fw-bold" id="welcome-message">Welcome, visitor !</h1>
-            <p class="col-md-8 fs-4" id="welcome-info">
-                Here lays the art of "drawing with light" pretty much known as Photography...
-            </p>
-
+        <div class="p-5 mb-4 upload-title">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Saved Images</h1>
+                <p class="col-md-8 fs-4">
+                    Here are your saved images
+                </p>
+    
+            </div>
         </div>
 
-        <img src="webPictures/welcome.png">
-      </div>
-
-      <?php
+        <?php
       
       //FOR IMAGE GRID
       if($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -61,7 +53,7 @@
     <form id='search-form' action='<?php $_SERVER['PHP_SELF'] ?>' method = 'POST'>
 
     <input id='search-bar' class='form-control me-sm-2' type='text'
-    placeholder='Search for photos' name='search' value='<?php echo $search?>'/>
+    placeholder='Search your saved photos' name='search' value='<?php echo $search?>'/>
 
      <select class='form-select form-select-lg' name='order' id='order-select'>
      <option <?php echo ($order === 'recent') ? 'selected': ''?> value='recent'>Recent</option>
@@ -71,24 +63,16 @@
      </form>
 
       <?php
+      $saved = true; 
+      $user_id = $_SESSION['user_id'];
 
       include 'components/imageGrid.php' ?>
       <!-- ------  -->
 
-        
-    </div>
-      </div>
-    </div>
-    </div>
+
+    <main>
+
    
-    
-
-    </main>
-
-    <footer>
-
-    </footer>
-
     <!--Masonry.js for grid layout-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
 
@@ -96,7 +80,6 @@
     <script src="https://unpkg.com/imagesloaded/imagesloaded.pkgd.min.js"></script>
 
     <script src="scripts/allGridScript.js"></script>
-
 
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

@@ -1,4 +1,12 @@
 <?php
+//clear old image tracking 
+if(!isset($_SESSION)) session_start(); 
+if(isset($_SESSION['current_image_id']))unset($_SESSION['current_image_id']);
+if(isset($_SESSION['current_image_path']))unset($_SESSION['current_image_path']);
+
+
+
+
 $searchURL = "http://localhost/PIXUP/dbModule/searchImage.php?order=$order"; //which is our db module that searches for the list of images. 
 if (!empty($search)) $searchURL .= "&category=$search";
 if (!empty($album_id)) $searchURL .= "&album_id=$album_id";
@@ -31,6 +39,11 @@ if (!isset($images['success']) || !$images['success'] || empty($images['data']))
 
 }
 
-include 'imageInfo.php'; 
+//image popup
+echo "
+<div class='popup'> </div>
+"
 
 ?>
+
+

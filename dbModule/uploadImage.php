@@ -9,114 +9,120 @@
  */
 
  //user id from session
- $user_id = 1;
+ if(!isset($_SESSION)) session_start(); 
+ $user_id =$_SESSION['user_id']; 
+ 
 
-    if($_SERVER['REQUEST_METHOD'] === "POST") {
-        $title=htmlspecialchars($_POST['image-title']);
-        $description=htmlspecialchars($_POST['image-description']);
+ if ($_SERVER['REQUEST_METHOD'] === "POST") {
+    $title = htmlspecialchars($_POST['image-title']);
+    $description = htmlspecialchars($_POST['image-description']);
 
-        if(isset($_POST['albums'])){
-            $albums = $_POST['albums'];
-        }
-
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $fileTmpPath = $_FILES['image']['tmp_name'];
-            $fileName = $_FILES['image']['name'];
-            $fileSize = $_FILES['image']['size'];
-            $fileType = $_FILES['image']['type'];
-
-            //file extension
-            $fileNameComponents = pathinfo($fileName);
-            $fileExtension = $fileNameComponents['extension'];
-        }
-
-
-       include 'connectToDB.php'; 
-
-       
-        $sql = "INSERT INTO images(title,description,user_id) VALUES('$title','$description',$user_id)";
-
-        if (!($conn->query($sql) === TRUE)) {
-            echo "Error inserting database: " . $conn->error;
-            exit; 
-        }
-
-        //getting the id of the just inserted image : 
-        $sql = "SELECT image_id FROM images ORDER BY image_id DESC LIMIT 1";
-        $result = $conn->query($sql); // Execute the query
-
-        if ($result && $result->num_rows > 0) {
-           
-            $row = $result->fetch_assoc();
-            $image_id = $row['image_id']; 
-            echo "The ID of the just-inserted image is: " . $image_id;
-        } else {
-            echo "Error fetching the image ID or no matching rows.";
-        }
-
-        $path = "images/".$image_id.".".$fileExtension; 
-        
-
-        //adding the path
-        $sql = "UPDATE images SET path = '$path' WHERE image_id = '$image_id'"; 
-        if (!($conn->query($sql) === TRUE)) {
-            echo "Error updating database: " . $conn->error;
-        }
-
-        //insert in the ALL album 
-        $sql ="SELECT album_id FROM albums WHERE user_id = $user_id AND album_name = 'All' LIMIT 1"; 
-        $result = $conn->query($sql); 
-        if ($result && $result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $all_id = $row['album_id'];
-            $sql = "INSERT INTO album_image(image_id,album_id) VALUES($image_id,$all_id)";
-            if (!($conn->query($sql) === TRUE)) {
-                echo "Error inserting into ALL album: " . $conn->error;
-            }; 
-        }
-
-        
-        //insert picture in albums selected by user 
-        if(isset($albums)){
-            foreach ($albums as $album_id) {
-                $sql = "INSERT INTO album_image(image_id,album_id) VALUES($image_id,$album_id)";
-                if (!($conn->query($sql) === TRUE)) {
-                    echo "Error inserting into ALL album: " . $conn->error;
-                }; 
-            }
-        }
-
-        //increment the imageCount 
-        $sql = "UPDATE users SET imageCount = imageCount + 1 WHERE user_id = $user_id"; 
-        if (!($conn->query($sql) === TRUE)) {
-            echo "Error incrementing imageCount: " . $conn->error;
-        }
-
-
-
-        //add the image to the directory : 
-        $uploadDir = '../images/';
-       
-        $fileExtension = $fileNameComponents['extension'];
-        $newFileName = $image_id . '.' . $fileExtension;
-
-        //target path
-        $destPath = $uploadDir . $newFileName;
-
-        // Move the file to the target directory
-        if (move_uploaded_file($fileTmpPath, $destPath)) {
-            echo "Image uploaded successfully!<br>";
-            echo "File path: " . htmlspecialchars($destPath);
-        } else {
-            echo "Error moving the uploaded file.";
-        }
-
-         //categories the image
-         include 'categoriesImage.php'; 
-        
-    }else {
-        echo "No file uploaded or there was an upload error.";
+    if (isset($_POST['albums'])) {
+        $albums = $_POST['albums'];
     }
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['image']['tmp_name'];
+        $fileName = $_FILES['image']['name'];
+        $fileSize = $_FILES['image']['size'];
+        $fileType = $_FILES['image']['type'];
+
+        // File extension
+        $fileNameComponents = pathinfo($fileName);
+        $fileExtension = $fileNameComponents['extension'];
+    }
+
+    include 'connectToDB.php';
+
+    // Insert into images table
+    $insertImageSql = "INSERT INTO images(title, description, user_id) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($insertImageSql);
+    $stmt->bind_param("ssi", $title, $description, $user_id);
+
+    if (!$stmt->execute()) {
+        echo "Error inserting into database: " . $stmt->error;
+        exit;
+    }
+    $stmt->close();
+
+    // Get the ID of the just-inserted image
+    $image_id = $conn->insert_id;
+
+    $path = "images/" . $image_id . "." . $fileExtension;
+
+    // Update the path in the images table
+    $updatePathSql = "UPDATE images SET path = ? WHERE image_id = ?";
+    $stmt = $conn->prepare($updatePathSql);
+    $stmt->bind_param("si", $path, $image_id);
+
+    if (!$stmt->execute()) {
+        echo "Error updating database: " . $stmt->error;
+    }
+    $stmt->close();
+
+    // Insert into the "All" album
+    $getAllAlbumSql = "SELECT album_id FROM albums WHERE user_id = ? AND album_name = 'All' LIMIT 1";
+    $stmt = $conn->prepare($getAllAlbumSql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $all_id = $row['album_id'];
+
+        $insertAlbumImageSql = "INSERT INTO album_image(image_id, album_id) VALUES (?, ?)";
+        $stmt = $conn->prepare($insertAlbumImageSql);
+        $stmt->bind_param("ii", $image_id, $all_id);
+
+        if (!$stmt->execute()) {
+            echo "Error inserting into ALL album: " . $stmt->error;
+        }
+        $stmt->close();
+    }
+
+    // Insert image into albums selected by user
+    if (isset($albums)) {
+        foreach ($albums as $album_id) {
+            $stmt = $conn->prepare("INSERT INTO album_image(image_id, album_id) VALUES (?, ?)");
+            $stmt->bind_param("ii", $image_id, $album_id);
+
+            if (!$stmt->execute()) {
+                echo "Error inserting into selected album: " . $stmt->error;
+            }
+            $stmt->close();
+        }
+    }
+
+    // Increment the image count for the user
+    $incrementImageCountSql = "UPDATE users SET imageCount = imageCount + 1 WHERE user_id = ?";
+    $stmt = $conn->prepare($incrementImageCountSql);
+    $stmt->bind_param("i", $user_id);
+
+    if (!$stmt->execute()) {
+        echo "Error incrementing imageCount: " . $stmt->error;
+    }
+    $stmt->close();
+
+    // Add the image to the directory
+    $uploadDir = '../images/';
+    $newFileName = $image_id . '.' . $fileExtension;
+    $destPath = $uploadDir . $newFileName;
+
+    if (move_uploaded_file($fileTmpPath, $destPath)) {
+        echo "Image uploaded successfully!<br>";
+        echo "File path: " . htmlspecialchars($destPath);
+        
+         // Categorize the image
+        include 'categoriesImage.php';
+    } else {
+        echo "Error moving the uploaded file.";
+    }
+
+} else {
+    echo "No file uploaded or there was an upload error.";
+}
+
 
     
     $conn->close();
