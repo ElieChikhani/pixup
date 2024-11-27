@@ -22,6 +22,10 @@
 $search = ''; 
 $order ="recent"; 
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $search = isset($_POST['search']) ? $_POST['search'] : '';
+    $order = isset($_POST['order']) ? $_POST['order'] : 'recent';
+}
 ?>
         <div class="album-header">
             <h1>My Album Title</h1>
@@ -57,8 +61,10 @@ $order ="recent";
             $searchTerm = $GLOBALS['search']; 
             $order = $GLOBALS['order'];
             $searchURL = "http://localhost/PIXUP/dbModule/search.php?order=$order&user_id=1";
-            echo "<h1>$searchTerm</h1>"
-            if (!empty($searchTerm)) $searchURL .= "&category=$searchTerm";
+            //echo "<h1>$searchTerm</h1>"
+            if (!empty($searchTerm)) {
+                $searchURL .= "&category=$searchTerm";
+            }
 
             $response = file_get_contents($searchURL);
           
@@ -82,7 +88,13 @@ $order ="recent";
                 foreach ($images['data'] as $image) {
                     $image_id = $image['image_id'];
                     $path = 'images/' . $image_id;
-                    echo "<div class='grid-item'><img src='$path' id='image.$image_id'></div>";
+                    echo "
+                        <div class='col-md-4 col-sm-6 mb-4'>
+                            <div class='grid-item'>
+                                <img src='$path' id='image.$image_id'>
+                            </div>
+                        </div>
+                    ";
                 }
                 echo "</div>";
 
