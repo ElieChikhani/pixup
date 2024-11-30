@@ -22,10 +22,7 @@
     <?php  
 
     if(!isset($_SESSION)) session_start(); 
-    
-    $_SESSION['user_id']=1; 
-    $_SESSION['username']='eliechikhani';
-   
+
     $username = isset($_SESSION['username']) && !empty($_SESSION['username'])?$_SESSION['username']:'visitor'; 
 
     if(isset($_GET['message'])&&isset($_GET['success'])&&!empty($_GET['message'])&&!empty($_GET['message'])) {
