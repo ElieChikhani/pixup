@@ -29,7 +29,7 @@
      <select class='form-select form-select-lg' name='order' id='order-select'>
      <option value='recent'>Recent</option>
      <option value='popular'>Most Popular</option>
-</select>
+   </select>
 
      </form>
 

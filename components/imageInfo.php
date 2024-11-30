@@ -4,17 +4,22 @@ if(!isset($_SESSION)) session_start();
 
 $image_id = isset($_GET['image_id']) ? (int)$_GET['image_id'] : null;
 $action = isset($_GET['action']) ? $_GET['action'] : 'close';
-$user_id = $_SESSION['user_id']; 
-$username = $_SESSION['username']; 
+$seletion = isset($_GET['selection']) ? (bool) $_GET['selection'] : false;
+
 
 if($action==='close'){
     unset($_SESSION['current_image_id']);
     unset($_SESSION['current_image_path']);
 }else {
 
+
+
 if(!empty($image_id)&&$action=='open'){
     //passing the id and username since such fetch request will cut the session !!
-    $imageInfo = "http://localhost/PIXUP/dbModule/getImageInfo.php?image_id=$image_id&current_user=$user_id&current_username=$username"; //which is our db module that searches for the list of images.
+    $imageInfo = "http://localhost/PIXUP/dbModule/getImageInfo.php?image_id=$image_id"; //which is our db module that searches for the list of images.
+    if(!empty($_SESSION['user_id'])&&!empty($_SESSION['username'])) $imageInfo .= "&current_user=".$_SESSION['user_id']."&current_username=".$_SESSION['username'];
+
+
     $result = file_get_contents($imageInfo); 
     if($result === false ){
         echo "Error occured while precessing info"; 
@@ -37,6 +42,7 @@ if(!empty($image_id)&&$action=='open'){
     $username = isset($imageInfoData['username']) ? $imageInfoData['username'] : null;
     $image_upload_date = isset($imageInfoData['upload_date']) ? $imageInfoData['upload_date'] : null;
     $saveCount = isset($imageInfoData['savedCount']) ? $imageInfoData['savedCount'] : null;
+
 
 
    //storing in the session the ucrrent image id to handle all operations on the image (save or delete)
@@ -84,6 +90,11 @@ if(!empty($image_id)&&$action=='open'){
       }else {
           echo "<button type='button' class='btn btn-primary delete-button'> Delete </button>";
       }
+
+    }
+
+    if(!empty($selection) && $selection){
+        echo "<button type='button' class='btn btn-primary remove-button'> Remove from album </button>";
 
     }
 

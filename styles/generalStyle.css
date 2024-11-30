@@ -361,6 +361,27 @@ header {
     color:white; 
 }
 
+#sign-out-button {
+    margin-left: 0.2%;
+    color: rgb(0, 0, 0);
+    background-color: transparent; 
+    border: none !important ;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer; 
+    padding: 8px 12px;
+    transition: color 0.3s ease, background-color 0.3s ease; 
+}
+
+#sign-out-button:hover {
+    color: rgb(255, 0, 0);
+    border-radius: 5px; 
+}
+
+#sign-out-button:focus {
+    outline: none;
+}
+
 
 
 

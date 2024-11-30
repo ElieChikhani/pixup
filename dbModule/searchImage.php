@@ -21,8 +21,8 @@ $user_id = isset($_GET['user_id']) ? (int)$_GET['user_id'] : null;
 $saved = isset($_GET['saved']) ? (bool)$_GET['saved'] : false; //must come with userID
 $keyword = isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : null;
 $order = isset($_GET['order']) ? trim(htmlspecialchars($_GET['order'])) : 'recent';
-$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
-$current_page = isset($_GET['current_page']) ? (int)$_GET['current_page'] : 1;
+$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : null;
+$current_page = isset($_GET['current_page']) ? (int)$_GET['current_page'] : null;
 $filter=isset($_GET['filter']) ? htmlspecialchars($_GET['filter']) : null;
 
 

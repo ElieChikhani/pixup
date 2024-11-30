@@ -8,7 +8,7 @@ $username= isset($_GET['current_username']) ? $_GET['current_username'] : null;
    
 // INFORMATION THAT SPECIFY IF THE USER CAN SAVE OR UNSAVE A PICTURE
 
-if(!empty($image_id)&&!empty($user_id)){
+if(!empty($image_id)){
         include 'connectToDB.php';
     
         $image_sql = "SELECT image_id, title, path, description, username, upload_date, savedCount 
@@ -34,7 +34,7 @@ if(!empty($image_id)&&!empty($user_id)){
             $image_info['savedCount'] = $row['savedCount'];
             $image_info['upload_date'] = $row['upload_date'];
     
-            // Prepared statement 
+          
             $category_sql = "SELECT category FROM category_image WHERE image_id = ?";
             $category_stmt = $conn->prepare($category_sql);
             $category_stmt->bind_param("i", $image_id);
@@ -45,10 +45,11 @@ if(!empty($image_id)&&!empty($user_id)){
                 $image_info['tags'][] = $category_row['category'];
             }
             $category_stmt->close();
-    
-    
-         
 
+            if(!empty($user_id)&&!empty($username)){
+                $image_info['saved'] = false; 
+                $image_info['isOwner'] = false;
+            }else {
                 // Checking if the current user is the owner of the picture
                 if ($username === $image_info['username']) {
                     $image_info['isOwner'] = true;
@@ -68,6 +69,7 @@ if(!empty($image_id)&&!empty($user_id)){
                     }
                     $saved_stmt->close();
                 }
+            }
     
             $response = [
                 "success" => true,

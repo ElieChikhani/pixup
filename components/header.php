@@ -42,12 +42,20 @@ if(isset($_SESSION) && !empty($_SESSION['username']) && !empty($_SESSION['user_i
     $username = $_SESSION['username']; 
     echo "<button id='profile-button'>
     <i class='fas fa-user-circle'></i> $username
-    </button>"; 
+    </button>
+
+    <button id='sign-out-button'> <i class='fa fa-sign-out'> </i> </button>
+
+    <script src='scripts/header.js'> </script>
+    
+    "; 
+
+    
 }else {
     echo "
-       <a id='signin' class='btn btn-primary'>Sign in</a>
+       <a id='signin' class='btn btn-primary' href = 'signin.php'>Sign In</a>
 
-       <a id='login' class='btn btn-primary'>Log in</a>
+       <a id='login' class='btn btn-primary' href = 'signup.php'>Sign Up</a>
 
     "; 
 }
