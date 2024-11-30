@@ -11,6 +11,9 @@
  //user id from session
  if(!isset($_SESSION)) session_start(); 
  $user_id =$_SESSION['user_id']; 
+
+ $success = true; 
+ $message = 'Your image is uploaded';
  
 
  if ($_SERVER['REQUEST_METHOD'] === "POST") {
@@ -40,7 +43,8 @@
     $stmt->bind_param("ssi", $title, $description, $user_id);
 
     if (!$stmt->execute()) {
-        echo "Error inserting into database: " . $stmt->error;
+        $success=false; 
+        $message = "Couldn't upload image try again later";
         exit;
     }
     $stmt->close();
@@ -56,7 +60,8 @@
     $stmt->bind_param("si", $path, $image_id);
 
     if (!$stmt->execute()) {
-        echo "Error updating database: " . $stmt->error;
+        $success=false; 
+        $message = "Couldn't upload image try again later";
     }
     $stmt->close();
 
@@ -76,7 +81,8 @@
         $stmt->bind_param("ii", $image_id, $all_id);
 
         if (!$stmt->execute()) {
-            echo "Error inserting into ALL album: " . $stmt->error;
+            $success=false; 
+            $message = "Couldn't insert image into your desired albums";
         }
         $stmt->close();
     }
@@ -88,7 +94,8 @@
             $stmt->bind_param("ii", $image_id, $album_id);
 
             if (!$stmt->execute()) {
-                echo "Error inserting into selected album: " . $stmt->error;
+                $success=false; 
+                $message = "Couldn't insert image into your desired albums";
             }
             $stmt->close();
         }
@@ -98,10 +105,6 @@
     $incrementImageCountSql = "UPDATE users SET imageCount = imageCount + 1 WHERE user_id = ?";
     $stmt = $conn->prepare($incrementImageCountSql);
     $stmt->bind_param("i", $user_id);
-
-    if (!$stmt->execute()) {
-        echo "Error incrementing imageCount: " . $stmt->error;
-    }
     $stmt->close();
 
     // Add the image to the directory
@@ -110,13 +113,11 @@
     $destPath = $uploadDir . $newFileName;
 
     if (move_uploaded_file($fileTmpPath, $destPath)) {
-        echo "Image uploaded successfully!<br>";
-        echo "File path: " . htmlspecialchars($destPath);
-        
          // Categorize the image
         include 'categoriesImage.php';
     } else {
-        echo "Error moving the uploaded file.";
+       $success=false; 
+       $message = "Coun't categorize the image !";
     }
 
 } else {
@@ -126,5 +127,8 @@
 
     
     $conn->close();
+    
+    header("Location: ../index.php?success=$success&message=$message");
+    exit(); 
 
 ?>

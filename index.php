@@ -19,15 +19,29 @@
 
 <body>
 
-
-
     <?php  
 
     if(!isset($_SESSION)) session_start(); 
     
     $_SESSION['user_id']=1; 
     $_SESSION['username']='eliechikhani';
-    
+   
+    $username = isset($_SESSION['username']) && !empty($_SESSION['username'])?$_SESSION['username']:'visitor'; 
+
+    if(isset($_GET['message'])&&isset($_GET['success'])&&!empty($_GET['message'])&&!empty($_GET['message'])) {
+        $success=$_GET['success'];
+        $message=$_GET['message'];
+
+        $type=$success?'success':'danger'; 
+
+        echo " <div class='alert alert-$type alert-dismissible fade show alert-display' role='alert'>
+            $message
+            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+             </div>
+        ";
+       
+    }
+
 
     include 'components/header.php'; ?>
     <main>
@@ -35,7 +49,7 @@
 
       <div class="p-5 mb-4 welcome">
         <div class="container-fluid py-5">
-            <h1 class="display-5 fw-bold" id="welcome-message">Welcome, visitor !</h1>
+            <h1 class="display-5 fw-bold" id="welcome-message">Welcome, <?php echo $username?></h1>
             <p class="col-md-8 fs-4" id="welcome-info">
                 Here lays the art of "drawing with light" pretty much known as Photography...
             </p>
@@ -45,41 +59,39 @@
         <img src="webPictures/welcome.png">
       </div>
 
-      <?php
-      
-      //FOR IMAGE GRID
-      if($_SERVER['REQUEST_METHOD'] == "POST") {
-         $search = htmlspecialchars($_POST['search']);
-         $order = htmlspecialchars($_POST['order']);
-      } else {
-         $search= '';
-         $order = 'recent'; //default ordering at first load of the page 
-      }
 
-      ?>
 
-    <form id='search-form' action='<?php $_SERVER['PHP_SELF'] ?>' method = 'POST'>
+    <form id='search-form'>
 
     <input id='search-bar' class='form-control me-sm-2' type='text'
-    placeholder='Search for photos' name='search' value='<?php echo $search?>'/>
+    placeholder='Search for photos' name='search'/>
 
      <select class='form-select form-select-lg' name='order' id='order-select'>
-     <option <?php echo ($order === 'recent') ? 'selected': ''?> value='recent'>Recent</option>
-     <option <?php echo ($order === 'popular') ? 'selected':''?> value='popular'>Most Popular</option>
-     </select>
+     <option value='recent'>Recent</option>
+     <option value='popular'>Most Popular</option>
+</select>
 
      </form>
+
+
+     
+     <div id="suggestion-box">
+        <p> Suggested category filters :  </p>
+
+        <div id=suggestions>
+        <button type="button" class="btn sugg clicked" id="initial-filter">All</button>
+        <button type="button" class="btn sugg">Landscape</button>
+        <button type="button" class="btn sugg">Nature</button>
+        <button type="button" class="btn sugg">Food</button>
+        <button type="button" class="btn sugg">Animal</button>
+     </div>
+        
+     </div>
 
       <?php
 
       include 'components/imageGrid.php' ?>
       <!-- ------  -->
-
-        
-    </div>
-      </div>
-    </div>
-    </div>
    
     
 

@@ -1,19 +1,20 @@
 <?php 
 
 if(!isset($_SESSION)) session_start(); 
+
 $image_id = isset($_GET['image_id']) ? (int)$_GET['image_id'] : null;
 $action = isset($_GET['action']) ? $_GET['action'] : 'close';
+$user_id = $_SESSION['user_id']; 
+$username = $_SESSION['username']; 
 
 if($action==='close'){
     unset($_SESSION['current_image_id']);
     unset($_SESSION['current_image_path']);
 }else {
 
-if(!empty($image_id)&&$action==='open'){
-
-    //store in the session the ucrrent image id to handle all operations on the image (save or delete)
-
-    $imageInfo = "http://localhost/PIXUP/dbModule/getImageInfo.php?image_id=$image_id"; //which is our db module that searches for the list of images.
+if(!empty($image_id)&&$action=='open'){
+    //passing the id and username since such fetch request will cut the session !!
+    $imageInfo = "http://localhost/PIXUP/dbModule/getImageInfo.php?image_id=$image_id&current_user=$user_id&current_username=$username"; //which is our db module that searches for the list of images.
     $result = file_get_contents($imageInfo); 
     if($result === false ){
         echo "Error occured while precessing info"; 
@@ -25,9 +26,8 @@ if(!empty($image_id)&&$action==='open'){
         echo "<p>An error occurred while processing the image information. Please try again later $error</p>";
     }
     
+    if($data['success']){
     $imageInfoData = $data['data'];
-    
-
     $image_title = isset($imageInfoData['title']) ? $imageInfoData['title'] : null;
     $image_path = isset($imageInfoData['path']) ? $imageInfoData['path'] : null;
     $image_description = isset($imageInfoData['description']) ? $imageInfoData['description'] : null;
@@ -38,6 +38,8 @@ if(!empty($image_id)&&$action==='open'){
     $image_upload_date = isset($imageInfoData['upload_date']) ? $imageInfoData['upload_date'] : null;
     $saveCount = isset($imageInfoData['savedCount']) ? $imageInfoData['savedCount'] : null;
 
+
+   //storing in the session the ucrrent image id to handle all operations on the image (save or delete)
     $_SESSION['current_image_id'] = $image_id;
     $_SESSION['current_image_path'] = $image_path;
     
@@ -56,7 +58,7 @@ if(!empty($image_id)&&$action==='open'){
     <div class='textual-content'>
         <h3 id='image-title'> $image_title </h3>
         <p id='upload-date'> $image_upload_date </p>
-        <p id='by'> $username  </p>
+        <p id='by'> <i class = 'fas fa-user'> </i> $username  </p>
        
 
         <p id='description'> $image_description</p>
@@ -89,6 +91,9 @@ if(!empty($image_id)&&$action==='open'){
     echo "</div>"; 
     echo "</div>";
 
+}else {
+    echo 'image  could not be displayed'; 
+}
 }
 }
 ?>

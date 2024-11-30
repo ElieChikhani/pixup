@@ -65,6 +65,7 @@ header {
 
 .photo-gallery{
     max-width: 100%;
+    min-height:80vh;
     margin:auto 2%;
 }
 
@@ -76,11 +77,12 @@ header {
     filter: brightness(60%); 
 }
 
-.error_message {
+.error-message {
     margin : 0 auto;
     width:50%; 
     justify-content:center; 
     justify-items: center;
+    align-self:center; 
 }
 
 .gallery-header {
@@ -141,7 +143,6 @@ header {
     margin : 5px 5px; 
     overflow: hidden;
 }
-
 
 .grid-item img {
     width: 100%; 
@@ -283,6 +284,16 @@ header {
     background-color: rgba(64, 0, 107, 0.8) !important;
 }
 
+.delete-button {
+    align-self:end; 
+    justify-self: end;
+    position:absolute; 
+    bottom:3%; 
+    right:2%; 
+    background-color: rgb(255, 17, 17);
+    border:none;  
+}
+
 .unsave {
     background-color: rgb(60, 60, 60);
    content:'Unsave'
@@ -310,6 +321,47 @@ header {
     text-decoration: none;
     color : rgb(64, 0, 107);
 }
+
+.alert-display {
+    position: fixed;
+    top: 10%;
+    right: 0;
+    z-index:30000; 
+}
+
+#suggestion-box {
+    display: flex;
+    align-items: center; 
+    gap: 15px; 
+    margin: 1% 0; 
+    padding-left:3%; 
+}
+
+#suggestion-box p {
+    margin: 0; 
+    font-weight: bold;
+    font-size: 1rem;
+    color: #333;
+}
+
+#suggestions {
+    display: flex;
+    gap: 10px; 
+}
+
+.btn.sugg {
+    font-size: 0.9rem; 
+    padding: 5px 15px;
+    background-color:#02005c77;
+    color:white; 
+}
+
+.btn.sugg:hover,.btn.sugg:active,.btn.sugg.clicked   {
+    background-color: #02005c;
+    color:white; 
+}
+
+
 
 
 

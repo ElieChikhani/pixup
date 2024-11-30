@@ -12,7 +12,6 @@ $tag_result = json_decode($result, true);
 
 if (json_last_error() !== JSON_ERROR_NONE) {
     echo "JSON Decode Error: " . json_last_error_msg();
-    echo "Raw response: " . $result;
     exit;
 }
 
@@ -22,17 +21,16 @@ if(isset($tag_result['status']['type'])&&$tag_result['status']['type']==="succes
     $tags = $tag_result['result']['tags'];
     $tag_list = array(); 
 
+    $tags_counter = 0; 
+
     //getting all the tags
     forEach($tags as $tag_info){
-        $confidence = $tag_info['confidence']; 
+        if($tags_counter > 10) break; 
         $tag = $tag_info['tag']['en'];
-
-        if($confidence > 40){
-            $tag_list[] = $tag;
-        }else {
-            break; 
-        }
+        $tag_list[] = $tag;
+        $tags_counter++; 
     }
+    
 
     //adding the tag to the image's info in database
     //connection must be alrelady open in files including this file (same for image id)

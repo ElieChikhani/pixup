@@ -1,10 +1,14 @@
 <?php
 
-// Connect to the database
-if(!isset($_SESSION)) session_start();
 $image_id = isset($_GET['image_id']) ? (int)$_GET['image_id'] : null;
+$user_id= isset($_GET['current_user']) ? (int)$_GET['current_user'] : null;
+$username= isset($_GET['current_username']) ? $_GET['current_username'] : null;
 
-if(!empty($image_id)){
+
+   
+// INFORMATION THAT SPECIFY IF THE USER CAN SAVE OR UNSAVE A PICTURE
+
+if(!empty($image_id)&&!empty($user_id)){
         include 'connectToDB.php';
     
         $image_sql = "SELECT image_id, title, path, description, username, upload_date, savedCount 
@@ -42,11 +46,8 @@ if(!empty($image_id)){
             }
             $category_stmt->close();
     
-            // INFORMATION THAT SPECIFY IF THE USER CAN SAVE OR UNSAVE A PICTURE
-            $user_id = 1; //$_SESSION['user_id']; 
-            $username = "eliechikhani";//$_SESSION['username'];
     
-            if (!empty($user_id)) {
+         
 
                 // Checking if the current user is the owner of the picture
                 if ($username === $image_info['username']) {
@@ -67,7 +68,6 @@ if(!empty($image_id)){
                     }
                     $saved_stmt->close();
                 }
-            } 
     
             $response = [
                 "success" => true,
@@ -83,9 +83,17 @@ if(!empty($image_id)){
         $stmt->close();
         $conn->close();
     
-        // Send JSON response
-        header("Content-Type: application/json");
-        echo json_encode($response);
+
+    }else {
+        $response = [
+            "success" => false,
+            "message" => 'cannot detect enough info'
+        ]; 
     }
+
+
+    header("Content-Type: application/json");
+     // Send JSON response
+     echo json_encode($response);
     
 ?>

@@ -1,5 +1,6 @@
 <?php
 
+header("Content-Type: application/json");
 if(!isset($_SESSION)) session_start();
 
 //deleting an image consists of deleting in all tabels rows containing this image id.
@@ -8,9 +9,27 @@ $image_id = $_SESSION['current_image_id'];
 $image_path = $_SESSION['current_image_path'];
 
 
+$user_id = $_SESSION['user_id'];
+include 'connectToDB.php'; 
+
+// Verifying that the image belongs to the user
+$stmt = $conn->prepare('SELECT * FROM images WHERE image_id = ? AND user_id = ?');
+$stmt->bind_param('ii', $image_id, $user_id);
+$stmt->execute();
+
+$result = $stmt->get_result();
+$image = $result->fetch_assoc();
+
+if (!$image) {
+    echo json_encode(['success' => false, 'message' => 'Action not authorized']);
+    exit;
+}
+
+
 //tables : 
 $tables = ['images','album_image','save_image','category_image'];
-include 'connectToDB.php'; 
+
+
 
 $response  = [
     'success' => true,
@@ -61,7 +80,6 @@ if (file_exists($path)) {
 }
 
 
-header("Content-Type: application/json");
 echo json_encode($response);
 
 ?>

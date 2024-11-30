@@ -22,7 +22,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-//upload request
+//upload request (because we need the upload id)
 $response = curl_exec($ch);
 
 //error handleing

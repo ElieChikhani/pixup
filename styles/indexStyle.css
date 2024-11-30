@@ -27,6 +27,10 @@
 
 }
 
+body {
+    background-color: hsl(218, 81%, 95%);
+}
+
 #welcome-message {
     color:rgb(71, 3, 110); 
 }

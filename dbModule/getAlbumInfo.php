@@ -24,12 +24,13 @@ if ($stmt) {
         }
 
         $response = [
-            'status' => 'success',
-            'album_info' => $album_info
+            'success' => true,
+            'album_info' => $album_info,
+            'numberOfResults'=> $result->num_rows
         ];
     } else {
         $response = [
-            'status' => 'error',
+            'success' => false,
             'message' => 'no album found'
         ];
     }
@@ -37,7 +38,7 @@ if ($stmt) {
     $stmt->close();
 } else {
     $response = [
-        'status' => 'error',
+        'success' => false,
         'message' => 'sql error'
     ]; 
 }

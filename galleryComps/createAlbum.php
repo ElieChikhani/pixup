@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'connectToDB.php';
+include '../dbModule/connectToDB.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = htmlspecialchars($_POST['name']);

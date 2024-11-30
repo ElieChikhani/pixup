@@ -19,19 +19,48 @@ $values = []; // parameter values
 $album_id = isset($_GET['album_id']) ? (int)$_GET['album_id'] : null;
 $user_id = isset($_GET['user_id']) ? (int)$_GET['user_id'] : null;
 $saved = isset($_GET['saved']) ? (bool)$_GET['saved'] : false; //must come with userID
-$category = isset($_GET['category']) ? $_GET['category'] : null;
-$order = isset($_GET['order']) ? $_GET['order'] : 'recent';
+$keyword = isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : null;
+$order = isset($_GET['order']) ? trim(htmlspecialchars($_GET['order'])) : 'recent';
+$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+$current_page = isset($_GET['current_page']) ? (int)$_GET['current_page'] : 1;
+$filter=isset($_GET['filter']) ? htmlspecialchars($_GET['filter']) : null;
 
 
 $categoryJoin="";
 $savedJoin="";
 $albumJoin=""; 
 
-if (!empty($category)) {
+
+if (!empty($keyword) && empty($filter)) {
+    //getting result on keyword only 
     $categoryJoin = " NATURAL JOIN category_image c ";
-    $conditions[] = "c.category LIKE ?";
-    $types .= "s";
-    $values[] = '%'.$category.'%';
+    $conditions[] = "(c.category LIKE ? OR i.title LIKE ? OR i.description LIKE ?)";
+    $types .= "sss"; // 3 strings
+
+   
+    for ($i = 0; $i < 3; $i++) {
+        $values[] = '%' . $keyword . '%';
+    }
+} elseif (!empty($filter) && empty($keyword)) {
+    //getting filter result on vategory only
+    $categoryJoin = " NATURAL JOIN category_image c ";
+    $conditions[] = "(c.category LIKE ?)";
+    $types .= "s"; // 1 string
+
+  
+    $values[] = $filter;
+
+} elseif (!empty($filter) && !empty($keyword)) { //done sepeartly to adjust brackets. 
+    //getting keyword result WITHIN THE CATEGORY FILTER
+    $categoryJoin = " NATURAL JOIN category_image c ";
+    $conditions[] = "(c.category = ? AND (i.title LIKE ? OR i.description LIKE ?))";
+    $types .= "sss"; 
+
+    
+    $values[] = $filter;
+    for ($i = 0; $i < 2; $i++) {
+        $values[] = '%' . $keyword . '%';
+    }
 }
 
 if (!empty($album_id)) {
@@ -64,12 +93,17 @@ if (!empty($conditions)) {
 
 //Setting the ORDER BY clause
 $orderBy = '';
-if ($order === 'recent') {
+if ($order == 'recent') {
     $orderBy = " ORDER BY i.image_id DESC";
-} elseif ($order === 'popular') {
+} elseif($order == 'popular') {
     $orderBy = " ORDER BY savedCount DESC";
 }
 $sql .= $orderBy;
+
+if(!empty($limit) && !empty($current_page)){
+    $offset = ($current_page - 1) * $limit; 
+    $sql .= " LIMIT $limit OFFSET $offset"; 
+}
 
 //Preparing the statement
 $stmt = $conn->prepare($sql);
@@ -90,20 +124,27 @@ if (!$stmt->execute()) {
 $result = $stmt->get_result();
 $images = [];
 while ($row = $result->fetch_assoc()) {
-    $images[$row["image_id"]] = $row["path"];
+    $images[] = [
+        "id" => $row["image_id"],
+        "path" => $row["path"]
+    ];
 }
 
 // Prepare the response
 if ($result->num_rows === 0) {
     $response = [
         "success" => false,
-        "message" => "No results found."
+        "message" => "No results found.",
+        "sql" => $sql
+     
     ];
 } else {
     $response = [
         "success" => true,
-        "data" => $images,
-        "numberOfImages" => $result->num_rows
+        "images" => $images,
+        "result_number" => $result->num_rows,
+        "sql" => $sql,
+        "order" => $order
     ];
 }
 

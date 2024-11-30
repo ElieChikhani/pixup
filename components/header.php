@@ -19,7 +19,7 @@ echo '
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="albums.php">Albums</a>
+                            <a class="nav-link" href="gallery.php">Gallery</a>
                         </li>
 
                         <li class="nav-item">

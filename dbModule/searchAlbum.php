@@ -40,7 +40,8 @@ if (!empty($user_id)) {
 
         $response = [
             'success' => true,
-            'albums' => $albums
+            'albums' => $albums,
+            'result_number' => $result->num_rows
         ];
     } else {
         $response = [

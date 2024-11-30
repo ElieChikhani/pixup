@@ -46,7 +46,7 @@
         class="alert alert-warning"
         role="alert"
       >
-      <strong> <i class="fas fa-circle-exclamation"> </i> Copyright rules : </strong> Please upload a picture that you "own" Or, mention in the description the rightful owner of the image
+      <strong> <i class="fas fa-circle-exclamation"> </i> Copyright rules : </strong> Please upload a picture that you own or mention the rightful owner of the image in the description
       </div>
 
 
@@ -121,7 +121,7 @@
             die("Error: Failed to decode JSON. " . json_last_error_msg());
         }
 
-        if($searchData['status']==="success"){
+        if($searchData['success'] && $searchData['result_number']>1){ //if the user has more than the "ALL" album
 
             echo "
              <label id='album_select_label'> Include in these albums :  </label>
@@ -155,7 +155,9 @@
 
         <div class="form-check">
             <input class="form-check-input" type="checkbox" name="terms_check" id="terms_check" required />
-            <label class="form-check-label" for="terms_check"> I accept that this image will be accessed publically and might be subject for AI training since it will be categorized by an AI model </label>
+            <label class="form-check-label" for="terms_check"> 
+            By uploading this image, I acknowledge and accept that it will be publicly
+                 accessible and that it will be processed and categorized using artificial intelligence (AI) technology. I understand that this may involve analysis and use of the image data for AI training and categorization purposes. </label>
             <div class="invalid-feedback"> You must agree before submitting.</div>
         </div>
 

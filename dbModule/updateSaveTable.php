@@ -1,5 +1,5 @@
 <?php
-
+  header("Content-Type: application/json");
 if(!isset($_SESSION)) session_start(); 
 $user_id =$_SESSION['user_id']; 
 $image_id=(isset($_SESSION) && isset($_SESSION['current_image_id']))?$_SESSION['current_image_id']:null; 
@@ -10,6 +10,20 @@ if (!empty($image_id)) {
     include 'connectToDB.php';
 
     $saved = false;
+
+     // Checking that the image does NOT beling to the user
+     $stmt = $conn->prepare('SELECT * FROM images WHERE image_id = ? AND user_id != ?');
+    $stmt->bind_param('ii', $image_id, $user_id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $image = $result->fetch_assoc();
+
+    if (!$image) {
+    echo json_encode(['success' => false, 'message' => 'Action not authorized']);
+    exit;
+    }
+
     
     // Checking if the image is already saved by the user
     $check_sql = "SELECT * FROM save_image WHERE image_id = ? AND user_id = ?";
@@ -76,7 +90,7 @@ if (!empty($image_id)) {
 }
 
 
-    header("Content-Type: application/json");
+  
     echo json_encode($response);
     
 
