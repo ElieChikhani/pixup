@@ -3,12 +3,12 @@ session_start();
 include '../dbModule/connectToDB.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: signin.php");
+    header("Location: ../signin.php");
     exit();
 }
 
 if (!isset($_GET['id'])) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit();
 }
 
@@ -23,7 +23,7 @@ $result = $stmt->get_result();
 $album = $result->fetch_assoc();
 
 if (!$album) {
-    header("Location: gallery.php?error=Album not found or you do not have permission to edit it.");
+    header("Location: ../gallery.php?error=Album not found or you do not have permission to edit it.");
     exit();
 }
 
@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="gallery.php">Back to Gallery</a>
+                        <a class="nav-link" href="../gallery.php">Back to Gallery</a>
                     </li>
                 </ul>
             </div>

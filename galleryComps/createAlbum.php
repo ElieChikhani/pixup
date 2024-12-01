@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("iss", $userId, $name, $description);
 
         if ($stmt->execute()) {
-            header("Location: gallery.php?success=Album created successfully!");
+            header("Location: ../gallery.php?success=Album created successfully!");
             exit();
         } else {
             $error = "Failed to create album. Please try again.";
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <main class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="display-4">Create Your Album</h1>
-        <a href="gallery.php" class="btn btn-outline-primary">Back to Gallery</a>
+        <a href="../gallery.php" class="btn btn-outline-primary">Back to Gallery</a>
     </div>
 
     <?php if (isset($error)) echo "<p class='error-message'>$error</p>"; ?>
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-submit">Create Album</button>
-            <a href="gallery.php" class="btn btn-cancel">Cancel</a>
+            <a href="../gallery.php" class="btn btn-cancel">Cancel</a>
         </div>
     </form>
 </main>

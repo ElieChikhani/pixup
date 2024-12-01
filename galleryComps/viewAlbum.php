@@ -60,7 +60,7 @@ $saved = isset($_GET['saved']) ? $_GET['saved'] : '';
     $_GET['user_id'] = $user_id;
     $_GET['saved'] = $saved;
 
-    include 'imageGrid.php';
+    include '../components/imageGrid.php';
     ?>
 
 </main>

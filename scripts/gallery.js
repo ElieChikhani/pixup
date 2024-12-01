@@ -22,15 +22,15 @@ function loadAlbums() {
                             <div class="card-body">
                                 <h5 class="card-title">${album.album_name}</h5>
                                 <p class="card-text">${isDefault ? "This is your default album." : "Custom album."}</p>
-                                <a href="galleryComps/viewAlbum.php?id=${album.album_id}" class="btn btn-outline-primary mb-2">
+                                <a href="../galleryComps/viewAlbum.php?id=${album.album_id}" class="btn btn-outline-primary mb-2">
                                     View Album
                                 </a>
                                 ${!isDefault ? `
                                     <div class="d-flex justify-content-between">
-                                        <a href="galleryComps/editAlbum.php?id=${album.album_id}" class="btn btn-edit">
+                                        <a href="../galleryComps/editAlbum.php?id=${album.album_id}" class="btn btn-edit">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
-                                        <a href="galleryComps/deleteAlbum.php?id=${album.album_id}" class="btn btn-delete">
+                                        <a href="../galleryComps/deleteAlbum.php?id=${album.album_id}" class="btn btn-delete">
                                             <i class="fas fa-trash"></i> Delete
                                         </a>
                                     </div>
@@ -42,7 +42,7 @@ function loadAlbums() {
                     albumsContainer.appendChild(albumCard);
                 });
             } else {
-                albumsContainer.innerHTML = "<p>No albums found. <a href='galleryComps/createAlbum.php'>Create your first album</a>!</p>";
+                albumsContainer.innerHTML = "<p>No albums found. <a href='../galleryComps/createAlbum.php'>Create your first album</a>!</p>";
             }
         })
         .catch(error => {
