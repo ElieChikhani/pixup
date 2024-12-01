@@ -14,7 +14,7 @@ let active_filter_button = document.getElementById('initial-filter');
 let selectableImages = false; 
 
 
-loadImages(search_term,order,limit, current_page,filter);  
+loadImages();  
 search_form.addEventListener('submit', (event) => {
     event.preventDefault();
     submitSearchForm(); 
