@@ -38,10 +38,7 @@ if($_SERVER['REQUEST_METHOD']==="POST"){
     $errors = checkCredentials($email_or_username,$password); 
   }
 
-
 }
-
-
 
 ?>
 
@@ -53,11 +50,11 @@ if($_SERVER['REQUEST_METHOD']==="POST"){
     <div class="row gx-lg-5 align-items-center mb-5">
       <div class="alltexts">
       <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-        <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+        <h1 class="my-5 display-5 fw-bold ls-tight" style="color:  hsl(0, 0%, 100%)">
           Welcome Back!<br />
           <span style="color: hsl(218, 81%, 75%)">Login From Your Existing Account!</span>
         </h1>
-        <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+        <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 75%)">
             Your creative space to share, organize, and explore stunning pictures. 
             Sign in now to connect with a vibrant community of photo enthusiasts, showcase your talent, 
             and get inspired by countless amazing visuals. Let’s make your imagination shine on PixUp!
