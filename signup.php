@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="stylesheet" href="styles/signin.css">
+<link rel="stylesheet" href="styles/signup.css">
 
 </head>
 <body>
@@ -17,7 +17,7 @@
 <section class="background-radial-gradient overflow-hidden">
  
 
-  <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+  <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5 " id="signup-container">
     <div class="row gx-lg-5 align-items-center mb-5">
       <div class="alltexts">
       
@@ -56,7 +56,7 @@
 
               <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label" for="form3Example4">Enter a description of yourself</label>
-                <input type="password" id="form3Example4" class="form-control" />
+                <textarea id="form3Example4" class="form-control"> </textarea>
               </div>
 
 

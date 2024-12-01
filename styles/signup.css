@@ -1,5 +1,5 @@
 .background-radial-gradient {
-  height: 100vh;
+  min-height: 100vh;
   background-color: #cfe2ff;
   background-image: radial-gradient(650px circle at 0% 0%,
     #cfe2ff
@@ -18,5 +18,14 @@
 .alltexts{
   display: flex;
   margin-top: 3vh;
- }
+}
+
+#signup-container {
+  margin-top: 0px  !important; 
+}
+
+.alltexts {
+  display: flex;
+  justify-content: center;
+}
 
