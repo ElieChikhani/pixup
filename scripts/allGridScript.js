@@ -11,6 +11,7 @@ let current_popup = undefined;
 let first_render = true; 
 let filter = ""; 
 let active_filter_button = document.getElementById('initial-filter'); 
+let selectableImages = false; 
 
 
 loadImages(search_term,order,limit, current_page,filter);  
@@ -122,6 +123,11 @@ function loadImages() {
         url += `&album_id=${encodeURIComponent(album_id)}`;
     }
 
+    if (search_form.getAttribute('album_id_not')) {
+        let album_id = search_form.getAttribute('album_id_not');
+        url += `&album_id_not=${encodeURIComponent(album_id)}`;
+    }
+
     if (search_form.getAttribute('saved')&&search_form.getAttribute('user_id')) {
         let saved = search_form.getAttribute('saved');
         let user_id = search_form.getAttribute('user_id');
@@ -198,7 +204,23 @@ function adjustGridDisplay(){
         msnry.layout();
     })
 
-    makeImagesClickable();
+    if(search_form.getAttribute('selectable')) {
+        makeImagesSelectable();
+    }else {
+        makeImagesClickable();
+    }
+
+}
+
+function makeImagesSelectable(){
+    const images = document.querySelectorAll('.grid-item');
+
+    Array.from(images).forEach((image)=> {
+        image.addEventListener('click', (event)=>{
+            event.target.classList.toggle('selected'); //which is the clicked image
+            image.classList.toggle('selected-box'); //to apply design 
+        })
+    }); 
 
 }
 
@@ -212,6 +234,7 @@ function makeImagesClickable(){
          image.addEventListener('click', function(event){ 
  
              image_id=event.target.id.replace('image',"");
+            
              fetch(`components/imageInfo.php?image_id=${image_id}&action=open`, {
                 credentials: 'include', 
              })

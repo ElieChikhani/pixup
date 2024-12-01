@@ -382,6 +382,12 @@ header {
     outline: none;
 }
 
+.selected-box {
+    border-radius:10px; 
+    border: 2px solid rgba(0, 0, 255, 0.8);
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.8);
+    
+}
 
 
 

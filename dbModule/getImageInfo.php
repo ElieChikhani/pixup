@@ -47,9 +47,6 @@ if(!empty($image_id)){
             $category_stmt->close();
 
             if(!empty($user_id)&&!empty($username)){
-                $image_info['saved'] = false; 
-                $image_info['isOwner'] = false;
-            }else {
                 // Checking if the current user is the owner of the picture
                 if ($username === $image_info['username']) {
                     $image_info['isOwner'] = true;

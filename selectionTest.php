@@ -21,10 +21,10 @@
 
    <h2> Edit the images in your album </h2> 
 
-   <form id='search-form'>
+   <form id='search-form' selectable='true'> 
 
     <input id='search-bar' class='form-control me-sm-2' type='text'
-    placeholder='Search for photos' name='search'/>
+    placeholder='Search for photos' name='search' />
 
      <select class='form-select form-select-lg' name='order' id='order-select'>
      <option value='recent'>Recent</option>
