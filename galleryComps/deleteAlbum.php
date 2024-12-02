@@ -1,18 +1,24 @@
 <?php
 session_start();
-include 'connectToDB.php';
+include '../dbModule/connectToDB.php';
 
-if (!isset($_GET['id'])) {
-    header("Location: index.php");
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../signin.php"); // Redirect to login page if not logged in
     exit();
 }
 
-$albumId = intval($_GET['id']);
+if (!isset($_GET['id'])) {
+    header("Location: ../index.php");
+    exit();
+}
+
+$albumId = intval($_POST['album_id']); 
+$userId = $_SESSION['user_id']; 
 
 if (isset($_POST['confirm'])) {
-    $sql = "SELECT thumbnail FROM albums WHERE id = ?";
+    $sql = "SELECT thumbnail FROM albums WHERE id = ? AND user_id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $albumId);
+    $stmt->bind_param("ii", $albumId, $userId);
     $stmt->execute();
     $result = $stmt->get_result();
     $album = $result->fetch_assoc();
@@ -22,24 +28,24 @@ if (isset($_POST['confirm'])) {
             unlink($album['thumbnail']);
         }
 
-        $sql = "DELETE FROM albums WHERE id = ?";
+        $sql = "DELETE FROM albums WHERE id = ? AND user_id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $albumId);
+        $stmt->bind_param("ii", $albumId, $userId);
         $stmt->execute();
 
-        header("Location: index.php?success=Album deleted successfully!");
+        header("Location: ../gallery.php?success=Album deleted successfully!");
         exit();
     } else {
-        header("Location: index.php?error=Album not found.");
+        header("Location: ../gallery.php?error=Album not found or you do not have permission to delete it.");
         exit();
     }
 } elseif (isset($_POST['cancel'])) {
-    header("Location: gallery.php?id=" . $albumId);
+    header("Location: ../gallery.php?id=" . $albumId);
     exit();
 } else {
-    $sql = "SELECT name FROM albums WHERE id = ?";
+    $sql = "SELECT name FROM albums WHERE id = ? AND user_id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $albumId);
+    $stmt->bind_param("ii", $albumId, $userId);
     $stmt->execute();
     $result = $stmt->get_result();
     $album = $result->fetch_assoc();
@@ -53,7 +59,7 @@ if (isset($_POST['confirm'])) {
             </form>
         ";
     } else {
-        header("Location: gallery.php?error=Album not found.");
+        header("Location: ../gallery.php?error=Album not found or you do not have permission to delete it.");
         exit();
     }
 }
