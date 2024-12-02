@@ -19,7 +19,7 @@
 //checking that a post request reloaded this page
 if($_SERVER['REQUEST_METHOD']==="POST"){
 
-   // Validating username or email
+   
   if (empty($_POST["email_or_username"])) {
     $errors['email_or_username'] = "Username or Email is required.";
   } else {
@@ -88,7 +88,7 @@ if($_SERVER['REQUEST_METHOD']==="POST"){
                 
               <!-- Submit button -->
               <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
-                Login
+                Sign in
               </button>
               <p>Create An Account?<a href="signup.php"> Click Here</a></p>
             </form>

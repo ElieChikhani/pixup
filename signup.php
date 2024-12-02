@@ -35,34 +35,44 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     } 
     
   }
+
+ 
   if (empty($_POST["password"])) {
     $errors['password'] = "Password is required.";
   } else {
     $password = trim(htmlspecialchars($_POST["password"]));
+    if (strlen($password) < 8) {
+        $errors['password'] = "Password must be at least 8 characters long.";
+    }
   }
 
-  // Confirm password validation
   if (empty($_POST["retypepassword"])) {
     $errors['retypepassword'] = "Password confirmation is required.";
   } else {
     $retypepassword = trim(htmlspecialchars($_POST["retypepassword"]));
   }
 
-  // Check if passwords match
+  
  if (!empty($password) && !empty($retypepassword) && $password !== $retypepassword) {
     $errors['password_match'] = "Passwords do not match.";
-}
-
-
-  // Check if no errors before processing further
-  if (empty($errors)) {
-    // Continue with further processing (e.g., database insertion)
   }
 
-  if(!empty($_POST["bio"]))
+  if(!empty($_POST["bio"])){
   $bio=trim(htmlspecialchars($_POST["bio"]));
+  }
 
+  include "dbModule/insertuser.php"; 
+  if(empty($errors)){
+    $errors = checkunique($username, $email); 
 
+    if(empty($errors)){
+      insertNewUser($username, $email, $password, $bio);
+    }
+    
+
+   } 
+
+  
 
 }
 
@@ -91,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 <label class="form-label" for="form3Example2">Username</label>
                 <input type="text" id="username" name="username" class="form-control" 
                 value = <?php if(isset($username)) echo $username?>>
-                <div class="error-message"> <?php if(isset($errors["username"])) echo $errors["username"] ?> </div> 
+                <div class="error-message text-danger "> <?php if(isset($errors["username"])) echo $errors["username"] ?> </div> 
 
               </div>
             
@@ -100,20 +110,23 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 <label class="form-label" for="form3Example3">Email address</label>
                 <input type="email" id="email" name="email" class="form-control" 
                 value = <?php if(isset($email)) echo $email?>>
-                <div class="error-message"> <?php if(isset($errors["email"])) echo $errors["email"] ?> </div> 
+                <div class="error-message text-danger"> <?php if(isset($errors["email"])) echo $errors["email"] ?> </div> 
              
               </div>
 
               <!-- Password input -->
               <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label" for="form3Example4">Password</label>
-                <input type="password" id="password" name="password" class="form-control" />
-                <div class="error-message"><?php if(isset($errors["password"])) echo $errors["password"]; ?></div>
+                <input type="password" id="password" name="password" class="form-control"
+                value = <?php if(isset($password)) echo $password?>>
+                <div class="error-message text-danger"><?php if(isset($errors["password"])) echo $errors["password"]; ?></div>
                 </div>
 
               <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label" for="form3Example4">Confirm your password</label>
-                <input type="password" id="retypepassword" name="retypepassword" class="form-control"/>
+                <input type="password" id="retypepassword" name="retypepassword" class="form-control"
+                minlength="8" title="Password must be at least 8 characters long" required
+                value = <?php if(isset($retypepassword)) echo $retypepassword?>>
                 <div class="error-message text-danger"><?php if(isset($errors["retypepassword"])) echo $errors["retypepassword"]; ?></div>
                 <div class="error-message text-danger"><?php if(isset($errors["password_match"])) echo $errors["password_match"]; ?></div>
               </div>
@@ -121,8 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
               <!-- BIO input -->
               <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label" for="form3Example4">Enter a description of yourself</label>
-                <textarea id="bio" name="bio" class="form-control" 
-                 value = <?php if(isset($bio)) echo $username?>> </textarea>
+                <textarea id="bio" name="bio" class="form-control">
+                <?php if(isset($bio)) echo $bio?> </textarea>
               </div>
 
 
