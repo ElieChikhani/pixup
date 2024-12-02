@@ -1,26 +1,20 @@
 <?php
-
-
-
 $user_id = isset($_GET['user_id']) ? (int)$_GET['user_id'] : null;
 
 include 'connectToDB.php';
 
 if (!empty($user_id)) {
    
-    $sql = "SELECT album_id, album_name, path 
-            FROM (albums a NATURAL JOIN album_image ai) 
-            JOIN images i ON ai.image_id = i.image_id 
-            WHERE a.user_id = ? 
-            AND ai.album_image_date = (
-                SELECT MAX(ai2.album_image_date) 
-                FROM album_image ai2 
-                WHERE ai2.album_id = ai.album_id
-            )";
+    $sql = "SELECT a.album_id, a.album_name, i.path 
+    FROM albums a 
+    LEFT JOIN album_image ai ON a.album_id = ai.album_id 
+    LEFT JOIN images i ON ai.image_id = i.image_id 
+    WHERE a.user_id = ? 
+    AND ( ai.album_image_date = ( SELECT MAX(ai2.album_image_date) FROM album_image ai2 WHERE ai2.album_id = a.album_id) 
+    OR ai.album_image_date IS NULL)";
 
-  
     $stmt = $conn->prepare($sql);
- $stmt->bind_param("i", $user_id); 
+    $stmt->bind_param("i", $user_id); 
     
 
     $stmt->execute();

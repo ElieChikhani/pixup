@@ -39,7 +39,7 @@ form label {
     border: 2px dashed #bbb5ff; 
     background-color: #f7f8ff;
     background-position:center;
-    background-size: center;
+    background-size: contain;
     background-repeat: no-repeat;
     height:100%;
     width:100%; 

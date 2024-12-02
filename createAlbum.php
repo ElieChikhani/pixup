@@ -3,7 +3,7 @@ session_start();
 include '../dbModule/connectToDB.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $userId = $_SESSION['user_id']; 
+    $userId = $_SESSION['user_id'];  
     $name = htmlspecialchars($_POST['name']);
     $description = htmlspecialchars($_POST['description']);
     
@@ -11,25 +11,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Album name and description are required.";
     } else {
         $originalName = $name;
-        $counter = 0;
 
-        do {
-            $check_sql = "SELECT COUNT(*) as count FROM albums WHERE user_id = ? AND name = ?";
-            $stmt_check = $conn->prepare($check_sql);
-            $stmt_check->bind_param("is", $userId, $name);
-            $stmt_check->execute();
-            $result = $stmt_check->get_result();
-            $row = $result->fetch_assoc();
+        //checking if there is already an album with similar name add a counter to the album name for example : food(1)
 
-            if ($row['count'] > 0) {
-                $counter++;
-                $name = $originalName . " ($counter)";
-            } else {
-                break;
-            }
-        } while (true);
+        $check_sql = "SELECT COUNT(*) as count FROM albums a WHERE a.album_name = ? AND a.user_id = ?"; 
+        $stmt_check = $conn->prepare($check_sql);
+        $stmt_check->bind_param("si",  $originalName,$userId);
+        $stmt_check->execute();
+        $result = $stmt_check->get_result();
 
-        $sql = "INSERT INTO albums (user_id, name, description, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
+        if ($result->num_rows > 0 ) {
+                $counter=$result->num_rows+1;
+                $name = $originalName . "($counter)";
+        } 
+
+
+        $sql = "INSERT INTO albums (user_id, album_name, album_description) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("iss", $userId, $name, $description);
 
@@ -93,9 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 </main>
 
-<!-- Bootstrap JavaScript Libraries -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 
+ <!-- Bootstrap JavaScript Libraries -->
+ <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
 </body>
 </html>

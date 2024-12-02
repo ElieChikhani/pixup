@@ -1,17 +1,17 @@
 function loadAlbums() {
     const userId = getUserId(); 
-    const searchTerm = document.getElementById('searchTerm').value; 
-    const order = document.getElementById('orderSelect').value; 
 
-    const url = `http://localhost/PIXUP/dbModule/search.php?order=${order}&user_id=${userId}&category=${searchTerm}`;
+    const url = `dbModule/searchAlbum.php?user_id=${userId}`;
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
             const albumsContainer = document.getElementById('albumsContainer');
-            if (data.success && data.data.length > 0) {
+            if (data.success) {
+                console.log(data);
+                console.log(url);
                 albumsContainer.innerHTML = ''; 
-                data.data.forEach(album => {
+                data.albums.forEach(album => {
                     const isDefault = album.album_name.toLowerCase() === 'all';
                     const albumCard = document.createElement('div');
                     albumCard.classList.add('col-md-4', 'col-sm-6');
@@ -22,15 +22,15 @@ function loadAlbums() {
                             <div class="card-body">
                                 <h5 class="card-title">${album.album_name}</h5>
                                 <p class="card-text">${isDefault ? "This is your default album." : "Custom album."}</p>
-                                <a href="../galleryComps/viewAlbum.php?id=${album.album_id}" class="btn btn-outline-primary mb-2">
+                                <a href="viewAlbum.php?id=${album.album_id}" class="btn btn-outline-primary mb-2">
                                     View Album
                                 </a>
                                 ${!isDefault ? `
                                     <div class="d-flex justify-content-between">
-                                        <a href="../galleryComps/editAlbum.php?id=${album.album_id}" class="btn btn-edit">
+                                        <a href="editAlbum.php?id=${album.album_id}" class="btn btn-edit">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
-                                        <a href="../galleryComps/deleteAlbum.php?id=${album.album_id}" class="btn btn-delete">
+                                        <a href="deleteAlbum.php?id=${album.album_id}" class="btn btn-delete">
                                             <i class="fas fa-trash"></i> Delete
                                         </a>
                                     </div>
@@ -52,7 +52,6 @@ function loadAlbums() {
 
 function getUserId() { 
     const userId = sessionStorage.getItem('user_id');
-    
     if (userId) {
         return userId; 
     } else {

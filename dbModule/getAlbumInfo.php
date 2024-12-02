@@ -21,12 +21,13 @@ if ($stmt) {
             $album_info['album_id']=$row['album_id'];
             $album_info['album_name']=$row['album_name'];
             $album_info['album_description']=$row['album_description'];
+            $album_info['album_creation_date']=$row['album_creation_date'];
+            $album_info['owner_id']=$row['user_id'];
         }
 
         $response = [
             'success' => true,
-            'album_info' => $album_info,
-            'numberOfResults'=> $result->num_rows
+            'album_info' => $album_info
         ];
     } else {
         $response = [

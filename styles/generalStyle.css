@@ -153,7 +153,8 @@ header {
     width: calc(33.333% - 10px); 
     margin-bottom: 10px; 
     margin : 5px 5px; 
-    overflow: hidden;
+   
+    cursor: pointer;
 }
 
 .grid-item img {
@@ -447,6 +448,17 @@ header {
     transform: rotate(0deg);
     transform-origin: 35px 145px;
     animation: rotate 2s infinite ease-in-out;
+  }
+
+  .remove-button {
+    position: absolute;
+    color:rgb(255, 255, 255); 
+    background-color: red;
+    padding:5px;
+    border-radius:100px;  
+    font-size:20px; 
+    top :-5px; 
+    right:-5px; 
   }
   
   @keyframes slide {

@@ -22,7 +22,7 @@ if(!empty($image_id)&&$action=='open'){
 
     $result = file_get_contents($imageInfo); 
     if($result === false ){
-        echo "Error occured while precessing info"; 
+        die ("Error occured while precessing info"); 
     }
     
     $data = json_decode($result, true);

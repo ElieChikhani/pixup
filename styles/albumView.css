@@ -1,0 +1,21 @@
+main {
+    margin: 0 10%;
+    background-color: white;
+    padding:0 10px; 
+    border-radius:5px;
+}
+
+#search-form {
+    background-color: white;
+    margin:0; 
+}
+
+#album_info {
+    margin:0 2%; 
+    position:sticky; 
+    z-index:1; 
+    top:0; 
+    background-color: white;
+    padding: 10px; 
+}
+

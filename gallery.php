@@ -17,6 +17,13 @@
 </head>
 <body>
 
+<?php 
+if(!isset($_SESSION)) {
+    session_start();
+}
+
+?>
+
 <header></header>
 
 <main class="container py-5">
@@ -27,20 +34,15 @@
         </a>
     </div>
 
-    <div class="d-flex mb-4">
-        <input type="text" id="searchTerm" class="form-control me-2" placeholder="Search Albums">
-        <select id="orderSelect" class="form-control me-2">
-            <option value="recent">Most Recent</option>
-            <option value="alphabetical">Alphabetical</option>
-            <option value="oldest">Oldest First</option>
-        </select>
-        <button class="btn btn-secondary" onclick="loadAlbums()">Search</button>
-    </div>
-
     <div id="albumsContainer" class="row g-4">
         <!-- dynamically added here -->
     </div>
 </main>
+
+<script>
+    const userId = <?php echo $_SESSION['user_id']; ?>;
+    sessionStorage.setItem('user_id', userId);
+</script>
 
 <!-- Bootstrap JavaScript Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
