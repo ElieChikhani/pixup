@@ -9,7 +9,7 @@
 include 'connectToDB.php'; 
 
 // Query parts
-$sql = "SELECT * FROM images i";
+$sql = "SELECT  DISTINCT(i.image_id), path FROM images i";
 $categoryJoin = '';
 $conditions = [];
 $types = ""; // parameters type
@@ -32,6 +32,7 @@ $savedJoin="";
 $albumJoin=""; 
 
 
+/** 
 if (!empty($keyword) && empty($filter)) {
     //getting result on keyword only 
     $categoryJoin = " NATURAL JOIN category_image c ";
@@ -54,15 +55,34 @@ if (!empty($keyword) && empty($filter)) {
 } elseif (!empty($filter) && !empty($keyword)) { //done sepeartly to adjust brackets. 
     //getting keyword result WITHIN THE CATEGORY FILTER
     $categoryJoin = " NATURAL JOIN category_image c ";
-    $conditions[] = "(c.category = ? AND (i.title LIKE ? OR i.description LIKE ?))";
+    $conditions[] = "(i.title LIKE ? OR i.description LIKE ? OR c.category = )";
     $types .= "sss"; 
 
     
     $values[] = $filter;
-    for ($i = 0; $i < 2; $i++) {
+    for ($i = 0; $i < 4; $i++) {
         $values[] = '%' . $keyword . '%';
     }
 }
+**/
+
+if (!empty($keyword)) {
+    $categoryJoin = " NATURAL JOIN category_image c ";
+    $conditions[] = "(c.category LIKE ? OR i.title LIKE ? OR i.description LIKE ?)";
+    $types .= "sss"; 
+    $values[]="%$keyword%";
+    $values[]="%$keyword%";
+    $values[]="%$keyword%";
+   
+}
+
+if (!empty($filter)) {
+    $categoryJoin = " NATURAL JOIN category_image c ";
+    $conditions[] = "(i.image_id IN (SELECT c2.image_id FROM category_image c2 WHERE c2.category LIKE ? ))";
+    $types .= "s"; 
+    $values[]="%$filter%";
+}
+
 
 if (!empty($album_id)) {
     $albumJoin = " NATURAL JOIN album_image a ";
@@ -72,7 +92,7 @@ if (!empty($album_id)) {
 }
 
 if (!empty($album_id_not)) {
-    $conditions[] = "i.image_id NOT IN (SELECT image_id FROM album_image WHERE album_id = ?)";
+    $conditions[] = "(i.image_id NOT IN (SELECT image_id FROM album_image WHERE album_id = ?))";
     $types .= "i";
     $values[] = $album_id_not;
 }

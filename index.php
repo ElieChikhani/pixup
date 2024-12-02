@@ -13,8 +13,8 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <link href="styles/generalStyle.css" rel="stylesheet" />
-    <link href="styles/indexStyle.css" rel="stylesheet" />
+  
+  <link href="styles/generalStyle.css" rel="stylesheet" />    <link href="styles/indexStyle.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -66,7 +66,7 @@
      <select class='form-select form-select-lg' name='order' id='order-select'>
      <option value='recent'>Recent</option>
      <option value='popular'>Most Popular</option>
-</select>
+     </select>
 
      </form>
 

@@ -1,6 +1,11 @@
+body {
+    background-color: #f7f8ff;
+}
+
 .saved-title {
     margin-bottom:0px !important; 
     height:auto;
+    background-color: hsl(218, 81%, 95%);
 }
 
 .saved-title .container-fluid{
@@ -10,7 +15,9 @@
 }
 
 #search-form {
-    background-color: hsl(218, 81%, 95%);
 
+    background-color: #f7f8ff;
 }
+
+
 

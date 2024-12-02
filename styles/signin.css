@@ -1,12 +1,12 @@
 .background-radial-gradient {
   min-height: 100vh;
   background-color:#cfe2ff;
-  background-image: radial-gradient(650px circle at 0% 0%,
-    #cfe2ff
-      transparent 100%),
-    radial-gradient(1250px circle at 100% 100%,
-    #cfe2ff
-      transparent 100%);
+  background: linear-gradient(#868686b2, #9191917a), 
+  url('../webPictures/background.avif');
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+  
 }
 
   
@@ -20,7 +20,7 @@
     flex-direction: row-reverse;
     margin-top: 3vh;
     gap: 2rem; 
- }
+  }
 
 .alltexts .col-lg-6 {
         margin: 0 auto;

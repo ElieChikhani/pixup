@@ -7,7 +7,7 @@ $user_id = isset($_GET['user_id']) ? (int)$_GET['user_id'] : null;
 include 'connectToDB.php';
 
 if (!empty($user_id)) {
-    // Base SQL query
+   
     $sql = "SELECT album_id, album_name, path 
             FROM (albums a NATURAL JOIN album_image ai) 
             JOIN images i ON ai.image_id = i.image_id 
@@ -18,9 +18,9 @@ if (!empty($user_id)) {
                 WHERE ai2.album_id = ai.album_id
             )";
 
-    // Prepare the SQL statement
+  
     $stmt = $conn->prepare($sql);
- $stmt->bind_param("i", $user_id); // Only user_id is used
+ $stmt->bind_param("i", $user_id); 
     
 
     $stmt->execute();

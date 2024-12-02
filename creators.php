@@ -41,23 +41,8 @@
                     name='search' />
             </form>
 
-            <div class="row g-4">
-                <!-- User Card -->
-    
-                <div class="col-md-4 col-lg-3">
-                    <div class="card user-card p-3">
-                        <div class="d-flex align-items-center">
-                            <img src="webPictures/profile.png" alt="User Profile" class="user-profile me-3">
-                            <div>
-                                <h5 class="mb-1">@clararezkallah</h5>
-                                <p class="text-muted mb-0">2345 images</p>
-                            </div>
-                        </div>
-                        <div class="mt-3 action-buttons text-center">
-                            <button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i> View</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="row g-4 users-grid">
+                
               
            
             </div>
@@ -70,6 +55,7 @@
 
 
 
+    <script src="scripts/usersGrid.js"> </script>
 
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

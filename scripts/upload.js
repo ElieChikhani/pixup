@@ -26,6 +26,8 @@ function uploadImage(){
 }
 
 
+
+
 //Drag and drop image functionality
 dropArea.addEventListener("dragover",function(event){
     event.preventDefault();
@@ -64,6 +66,12 @@ textArea.addEventListener("input", () => {
     let count = textArea.value.length;
     charCount.innerHTML=(TEXTLIMIT - count )+" characters left"; 
 })
+
+
+//dispaly loader at submit
+document.getElementById('image-upload-form').addEventListener('submit', ()=>{
+  document.getElementsByClassName('loader-container')[0].style.display="flex";
+}); 
 
 
 

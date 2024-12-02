@@ -18,6 +18,11 @@
 </head>
 
 <body>
+
+<div class="loader-container">
+        <div class="loader"></div>
+    </div>
+
    
     <?php 
     session_start();
@@ -25,6 +30,9 @@
     include 'components/header.php';
     include 'components/signinrequired.php'
     ?>
+
+
+
 
 
     <main>
@@ -170,15 +178,16 @@
         </button>
         </div>
 
-        
 
     </form>
+
     
     
     </section>
 
     
     </main>
+
     <footer>
 
     </footer>

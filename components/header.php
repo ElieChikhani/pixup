@@ -36,9 +36,10 @@ echo '
 
 if(isset($_SESSION) && !empty($_SESSION['username']) && !empty($_SESSION['user_id']  ) ){
     $username = $_SESSION['username']; 
-    echo "<button id='profile-button'>
+    $user_id = $_SESSION['user_id'];
+    echo "<a id='profile-button' href=userprofile.php/user_id=$user_id>
     <i class='fas fa-user-circle'></i> $username
-    </button>
+    </a>
 
     <button id='sign-out-button'> <i class='fa fa-sign-out'> </i> </button>
 

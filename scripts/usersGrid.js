@@ -29,33 +29,14 @@ function submitSearchForm(){
 }
 
 function loadUsers() {
-    let url = `dbModule/searchImage.php?order=${encodeURIComponent(order)}
-             &keyword=${encodeURIComponent(search_term)}&limit=${encodeURIComponent(limit)}&current_page=${encodeURIComponent(current_page)}&&filter=${encodeURIComponent(filter)}`;
-
-    if (search_form.getAttribute('album_id')) {
-        let album_id = search_form.getAttribute('album_id');
-        url += `&album_id=${encodeURIComponent(album_id)}`;
-    }
-
-    if (search_form.getAttribute('album_id_not')) {
-        let album_id = search_form.getAttribute('album_id_not');
-        url += `&album_id_not=${encodeURIComponent(album_id)}`;
-    }
-
-    if (search_form.getAttribute('saved')&&search_form.getAttribute('user_id')) {
-        let saved = search_form.getAttribute('saved');
-        let user_id = search_form.getAttribute('user_id');
-        url += `&saved=${encodeURIComponent(saved)}&user_id=${encodeURIComponent(user_id)}`;
-    }
-
+    let url = `dbModule/searchUser.php?keyword=${encodeURIComponent(search_term)}&limit=${encodeURIComponent(limit)}&current_page=${encodeURIComponent(current_page)}`;
 
     //hiding the error message if it exists 
     let error_message = document.getElementsByClassName("error-message")[0];
-    if(error_message && more_images) grid.innerHTML = ''; //if more images is resetd to true and the error_message is still appearing we should empty the grid to accept new images
-    if(!more_images) return; 
+    if(error_message && more_users) grid.innerHTML = ''; //if more images is resetd to true and the error_message is still appearing we should empty the grid to accept new images
+    if(!more_users) return; 
    
-
-    fetchImages(url); 
+    fetchUsers(url); 
   
 }
 
@@ -68,28 +49,49 @@ function fetchUsers(url){
             return response.json(); 
         })
         .then(data => {
-            console.log(url);
+            console.log(url); 
             console.log(data);
-            if(data.success && data.result_number > 0){
-               data.images.forEach((image_data) =>  {
-                    let grid_item = document.createElement('div');
-                    grid_item.className = 'grid-item';
-                    grid.appendChild(grid_item); 
-                    let image = document.createElement('img'); 
-                    image.src = image_data.path;
-                    image.id = `image${image_data.id}`; 
-                    grid_item.appendChild(image); 
+            if(data.success){
+               data.users.forEach((user) =>  {
+                 let username = user.username; 
+                 let user_id = user.user_id;
+                 let user_imageCount = user.imageCount;
+
+                 grid.innerHTML += `
+                  <div class="col-md-4 col-lg-3">
+                    <div class="card user-card p-3">
+                        <div class="d-flex align-items-center">
+                            <img src="webPictures/profile.png" alt="User Profile" class="user-profile me-3">
+                            <div>
+                                <h5 class="mb-1">@${username}</h5>
+                                <p class="text-muted mb-0">${user_imageCount} images</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 action-buttons text-center">
+                            <button class="btn btn-primary btn-sm view-button" destination-user='${user_id}'><i class="fas fa-eye"></i> View</button>
+                        </div>
+                    </div>
+                </div>
+                 `;
+
                 })
 
                 first_render=false; 
-                adjustGridDisplay(); 
+
+                Array.from(document.getElementsByClassName('view-button')).forEach((button) => {addEventListener('click', (event) => {
+                    let destination_user = event.target.getAttribute('destination-user');
+                    let url = `userprofile.php?user_id=${destination_user}`
+                    window.location.href = url;
+                }); 
+                })
+                 
             }else {
-                more_images = false; 
+                more_users= false; 
                 if(grid.innerHTML==='' && current_page === 1){
                 grid.innerHTML=`
                      <div class='error-message'>
                      <img src='webPictures/notFound.png' width=300px>
-                        <h3> Oops ! Coudn't find what you're looking for ... </h3>
+                        <h3> Oops ! No users found </h3>
                      </div>
                 `;
                 
@@ -104,12 +106,11 @@ function fetchUsers(url){
 
 }
 
-
 //displaying images as user scrolls down 
 window.addEventListener('scroll', () => {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100 && !first_render) { //near the bottom of page
         current_page++;
-        loadUsers(search_term, order, limit, current_page);
+        loadUsers();
     }
 });
 

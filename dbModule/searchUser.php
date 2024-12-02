@@ -2,7 +2,7 @@
 
 include 'connectToDB.php'; 
 
-$search_term = isset($_GET['search_term']) ? trim(htmlspecialchars($_GET['search_term'])):'';
+$keyword = isset($_GET['keyword']) ? trim(htmlspecialchars($_GET['keyword'])):'';
 $limit = isset($_GET['limit']) ? (int)$_GET['limit']:10; 
 $current_page = isset($_GET['current_page']) ? (int)$_GET['current_page'] :1;
 
@@ -13,9 +13,9 @@ $sql = "SELECT username, user_id, imageCount FROM users";
 $types ='';
 $values = array();
 
-if(!empty($search_term)){
+if(!empty($keyword)){
     $sql .= " WHERE username LIKE ? ";
-    $values[] = "%$search_term%"; 
+    $values[] = "%$keyword%"; 
     $types .= 's'; 
 }
 
@@ -44,13 +44,13 @@ if( $result && $result->num_rows > 0) {
 
     $response = [
         'success' => true,
-        'users'=> $users,
+        'users'=> $users
     ]; 
 }else {
 
     $response = [
         'success' => false,
-        'message'=> "users not found",
+        'message'=> "users not found"
     ]; 
 
 }
@@ -58,12 +58,5 @@ if( $result && $result->num_rows > 0) {
 
 header("Content-Type: application/json");
 echo json_encode($response);
-
-
-
-
-
-
-
 
 ?>

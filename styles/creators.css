@@ -40,3 +40,8 @@
 .users-container {
     margin-top:0 !important; 
 }
+
+.users-grid {
+    min-height:60vh; 
+}
+
