@@ -67,6 +67,7 @@ if($_SERVER['REQUEST_METHOD']==="POST"){
 
         <div class="card bg-glass">
           <div class="card-body px-4 py-5 px-md-5">
+            
             <form action=<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?> method="POST">
               <!-- Email input -->
               <div data-mdb-input-init class="form-outline mb-4">
