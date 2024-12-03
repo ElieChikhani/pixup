@@ -14,7 +14,7 @@ include 'connectToDB.php';
 
 // Verifying that the image belongs to the user
 $stmt = $conn->prepare('SELECT * FROM images WHERE image_id = ? AND user_id = ?');
-$stmt->bind_param('ii', $image_id, $user_id);
+$stmt->bind_param('ss', $image_id, $user_id);
 $stmt->execute();
 
 $result = $stmt->get_result();
@@ -53,7 +53,7 @@ foreach ($tables as $table) {
 //decrement the imageCount of user 
 $user_id = $_SESSION['user_id']; 
 $stmt = $conn->prepare("UPDATE users SET imageCount = imageCount - 1 WHERE user_id = ?");
-$stmt->bind_param('i', $user_id); // 'i' for integer type
+$stmt->bind_param('s', $user_id); // 'i' for integer type
 if (!$stmt->execute()) {
     $response  = [
         'success' => false,

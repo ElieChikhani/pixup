@@ -1,5 +1,5 @@
 <?php
-$user_id = isset($_GET['user_id']) ? (int)$_GET['user_id'] : null;
+$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : null;
 
 include 'connectToDB.php';
 
@@ -10,11 +10,12 @@ if (!empty($user_id)) {
     LEFT JOIN album_image ai ON a.album_id = ai.album_id 
     LEFT JOIN images i ON ai.image_id = i.image_id 
     WHERE a.user_id = ? 
-    AND ( ai.album_image_date = ( SELECT MAX(ai2.album_image_date) FROM album_image ai2 WHERE ai2.album_id = a.album_id) 
-    OR ai.album_image_date IS NULL)";
+    AND ( ai.album_image_id = ( SELECT MAX(ai2.album_image_id) FROM album_image ai2 WHERE ai2.album_id = a.album_id) 
+    OR ai.album_image_id IS NULL)
+    ORDER BY a.album_creation_date";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id); 
+    $stmt->bind_param("s", $user_id); 
     
 
     $stmt->execute();

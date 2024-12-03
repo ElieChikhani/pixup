@@ -48,10 +48,15 @@ function handleImageSave(save_button) {
     })
     .then((data) => {
       if (data.success) {
+        let savedImages = document.getElementById('saved-count'); 
+        let savedCount = savedImages.innerText; 
+
         if (data.action === "saved") {
           setSaveButtonState(save_button, true);
+          savedImages.innerHTML = Number(savedCount)+1; 
         } else {
           setSaveButtonState(save_button, false);
+          savedImages.innerHTML = Number(savedCount)-1; 
         }
 
         //resubmit if saved page
@@ -80,7 +85,16 @@ function handleImageDelete() {
       return response.json();
     })
     .then((data) => {
-      console.log("Request succeeded:", data);
+
+      if(data.success){
+        let currentUrl = window.location.href;
+        let success = true; 
+        let message = "Image deleted succefully"; 
+        let url = currentUrl+`?success=${encodeURIComponent(success)}&message=${encodeURIComponent(message)}`; 
+        window.open(url);
+        
+      }
+      
     })
     .catch((error) => {
       console.error("An error occurred:", error);
@@ -154,8 +168,6 @@ function fetchImages(url) {
       return response.json();
     })
     .then((data) => {
-      console.log(url);
-      console.log(data);
       if (data.success && data.result_number > 0) {
         data.images.forEach((image_data) => {
           let grid_item = document.createElement("div");
@@ -251,7 +263,9 @@ function makeImagesRemovable() {
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
+
           return response.json(); 
+        
         })
         .then((data) => {
             if(data.success)image.remove();
@@ -285,7 +299,7 @@ function makeImagesClickable() {
         .then((data) => {
           let popup = document.getElementsByClassName("popup")[0];
           popup.style.display = "flex";
-          popup.innerHTML = data;
+          popup.innerHTML = data; //which is the elements of the image info display
 
           //event listener for save button
           const save_button = document.getElementsByClassName("save-button")[0];

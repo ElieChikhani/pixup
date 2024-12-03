@@ -15,26 +15,17 @@ function loadAlbums() {
                     const isDefault = album.album_name.toLowerCase() === 'all';
                     const albumCard = document.createElement('div');
                     albumCard.classList.add('col-md-4', 'col-sm-6');
+                    recent_image_path = !album.recent_image_path?'webPictures/emptyAlbum.jpg':album.recent_image_path;
 
                     albumCard.innerHTML = `
                         <div class="card">
-                            <img src="${album.recent_image_path}" class="card-img-top" alt="${album.album_name}">
+                            <img src="${recent_image_path}" class="card-img-top preview" alt="${album.album_name}">
                             <div class="card-body">
                                 <h5 class="card-title">${album.album_name}</h5>
-                                <p class="card-text">${isDefault ? "This is your default album." : "Custom album."}</p>
+                                <p class="card-text">${isDefault ? "This is a default album." : "Custom album."}</p>
                                 <a href="viewAlbum.php?id=${album.album_id}" class="btn btn-outline-primary mb-2">
                                     View Album
                                 </a>
-                                ${!isDefault ? `
-                                    <div class="d-flex justify-content-between">
-                                        <a href="editAlbum.php?id=${album.album_id}" class="btn btn-edit">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </a>
-                                        <a href="deleteAlbum.php?id=${album.album_id}" class="btn btn-delete">
-                                            <i class="fas fa-trash"></i> Delete
-                                        </a>
-                                    </div>
-                                ` : ''}
                             </div>
                         </div>
                     `;
@@ -52,6 +43,7 @@ function loadAlbums() {
 
 function getUserId() { 
     const userId = sessionStorage.getItem('user_id');
+    console.log(userId);
     if (userId) {
         return userId; 
     } else {

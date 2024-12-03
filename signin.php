@@ -46,27 +46,17 @@ if($_SERVER['REQUEST_METHOD']==="POST"){
 <section class="background-radial-gradient overflow-hidden">
  
 
-  <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5" id="all-contents">
+  <div class="container px-4 px-md-5 text-center text-lg-start my-5" id="all-contents">
     <div class="row gx-lg-5 align-items-center mb-5">
       <div class="alltexts">
-      <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-        <h1 class="my-5 display-5 fw-bold ls-tight" style="color:  hsl(0, 0%, 100%)">
-          Welcome Back!<br />
-          <span style="color: hsl(218, 81%, 75%)">Login From Your Existing Account!</span>
-        </h1>
-        <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 75%)">
-            Your creative space to share, organize, and explore stunning pictures. 
-            Sign in now to connect with a vibrant community of photo enthusiasts, showcase your talent, 
-            and get inspired by countless amazing visuals. Let’s make your imagination shine on PixUp!
-        </p>
-      </div>
-
-      <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
-        <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
-        <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
-
+  
+      <div class="col-lg-6 mb-1 mb-lg-0 position-relative">
+  
         <div class="card bg-glass">
           <div class="card-body px-4 py-5 px-md-5">
+
+          <h3 class="mb-2">Happy to see you back at Pixup !</h3>
+          <h4 class="mb-4">Sign in to your account</h4>
             
             <form action=<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?> method="POST">
               <!-- Email input -->

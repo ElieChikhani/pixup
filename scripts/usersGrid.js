@@ -49,8 +49,6 @@ function fetchUsers(url){
             return response.json(); 
         })
         .then(data => {
-            console.log(url); 
-            console.log(data);
             if(data.success){
                data.users.forEach((user) =>  {
                  let username = user.username; 
@@ -68,7 +66,7 @@ function fetchUsers(url){
                             </div>
                         </div>
                         <div class="mt-3 action-buttons text-center">
-                            <button class="btn btn-primary btn-sm view-button" destination-user='${user_id}'><i class="fas fa-eye"></i> View</button>
+                            <a class="btn btn-primary btn-sm view-button" href='userprofile.php?user_id=${user_id}'><i class="fas fa-eye"></i> View</a>
                         </div>
                     </div>
                 </div>
@@ -77,13 +75,6 @@ function fetchUsers(url){
                 })
 
                 first_render=false; 
-
-                Array.from(document.getElementsByClassName('view-button')).forEach((button) => {addEventListener('click', (event) => {
-                    let destination_user = event.target.getAttribute('destination-user');
-                    let url = `userprofile.php?user_id=${destination_user}`
-                    window.location.href = url;
-                }); 
-                })
                  
             }else {
                 more_users= false; 

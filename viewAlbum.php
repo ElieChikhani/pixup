@@ -1,11 +1,12 @@
 <?php
 
+if(empty($_SESSION)) session_start();
 
 if (!isset($_GET['id'])) {
     die("Album ID not specified.");
 }
 
-$album_id = intval($_GET['id']);
+$album_id = $_GET['id'];
 if (!$album_id) {
     die('album id not given');
 }
@@ -59,9 +60,31 @@ if($data['success']){
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="display-4"><?php echo htmlspecialchars($album['album_name']); ?></h1>
-        <a href="editAlbum.php?id=<?php echo $album_id; ?>" class="btn btn-outline-primary">
-            <i class="fas fa-edit"></i> Edit Album  
-        </a>
+
+        <?php 
+
+        $name = $album['album_name'];
+ 
+
+        include "components/canEditAlbum.php";
+
+        if(isset($_SESSION['user_id'])&&canEditAlbum($album_id,$_SESSION['user_id'])){
+            echo "
+            <div>
+              <a href='editAlbum.php?id=$album_id' class='btn btn-outline-primary'>
+             <i class='fas fa-edit'></i> Edit Album  
+             </a>
+
+             <a href='dbModule/deleteAlbum.php?id=$album_id&album_name=$name' class='btn btn-outline-danger'>
+             <i class='fas fa-trash-can'></i> Delete Album
+             </a>
+             </div>";
+            
+  
+        }
+
+        ?>
+        
     </div>
 
     <p><?php echo htmlspecialchars($album['album_description']); ?></p>

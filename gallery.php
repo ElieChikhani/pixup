@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <link href="styles/generalStyle.css" rel="stylesheet" />
-    <link href="styles/indexStyle.css" rel="stylesheet" />
+    <link href="styles/galleryStyle.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -22,27 +22,57 @@ if(!isset($_SESSION)) {
     session_start();
 }
 
+$user_id = $_SESSION['user_id']; 
+
+
+
+include "components/header.php"; 
+
+if(isset($_GET['message'])&&isset($_GET['success'])&&!empty($_GET['message'])&&!empty($_GET['message'])) {
+    $success=$_GET['success'];
+    $message=$_GET['message'];
+
+    $type=$success?'success':'danger'; 
+
+    echo " <div class='alert alert-$type alert-dismissible fade show alert-display' role='alert'>
+        $message
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+         </div>
+    ";
+   
+}
+
+
+
+include "components/signinrequired.php"; 
+
+
 ?>
 
-<header></header>
+<div class="p-5 mb-4 gallery-title">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">You gallery</h1>
+                <p class="col-md-8 fs-4">
+                   Your photography wall... 
+                </p>
+            </div>
+        </div>
+
 
 <main class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="display-4">Your Albums</h1>
-        <a href="galleryComps/createAlbum.php" class="btn btn-primary">
+        <a href="createAlbum.php" class="btn btn-primary">
             <i class="fas fa-plus"></i> Add Album  
         </a>
     </div>
 
-    <div id="albumsContainer" class="row g-4">
-        <!-- dynamically added here -->
-    </div>
+    <?php include "components/albumGallery.php" ?>
+
+    
 </main>
 
-<script>
-    const userId = <?php echo $_SESSION['user_id']; ?>;
-    sessionStorage.setItem('user_id', userId);
-</script>
+
 
 <!-- Bootstrap JavaScript Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

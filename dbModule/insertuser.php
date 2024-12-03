@@ -31,21 +31,35 @@ function insertNewUser($username, $email, $password, $bio) {
     include "connectToDB.php"; 
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT); 
+    $unique_id = uniqid();
 
    
-    $sql = "INSERT INTO users (username, email, password, bio)
-    VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO users (user_id,username, email, password, bio)
+    VALUES (?,?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $username, $email, $hashed_password, $bio);
+    $stmt->bind_param("sssss",$unique_id ,$username, $email, $hashed_password, $bio);
 
  
-    if ($stmt->execute()) {
-        return true; 
-    } else {
+    if (!$stmt->execute()) { 
+        $stmt->close();
         return false; 
     }
+        
+    if(!isset($_SESSION)) session_start();
+    $_SESSION["username"] = $username;
 
-    $stmt->close();
+
+
+        //creating for the user the All album 
+        include "insertAlbum.php"; 
+        createAlbum('All','',$unique_id); 
+
+        $_SESSION["user_id"] = $unique_id;
+        $stmt->close();
+        header("Location: index.php");
+        return true;
+
+
 }
 
 

@@ -37,10 +37,13 @@
 
     include 'connectToDB.php';
 
+    $unique_id = uniqid();
+    $path = 'images/'.$unique_id.'.'.$fileExtension; 
+
     // Insert into images table
-    $insertImageSql = "INSERT INTO images(title, description, user_id) VALUES (?, ?, ?)";
+    $insertImageSql = "INSERT INTO images(image_id,title, description, user_id,path) VALUES (?,?, ?, ?,?)";
     $stmt = $conn->prepare($insertImageSql);
-    $stmt->bind_param("ssi", $title, $description, $user_id);
+    $stmt->bind_param("sssss",$unique_id, $title, $description, $user_id,$path);
 
     if (!$stmt->execute()) {
         $success=false; 
@@ -49,26 +52,13 @@
     }
     $stmt->close();
 
-    // Get the ID of the just-inserted image
-    $image_id = $conn->insert_id;
+    $image_id = $unique_id;
 
-    $path = "images/" . $image_id . "." . $fileExtension;
-
-    // Update the path in the images table
-    $updatePathSql = "UPDATE images SET path = ? WHERE image_id = ?";
-    $stmt = $conn->prepare($updatePathSql);
-    $stmt->bind_param("si", $path, $image_id);
-
-    if (!$stmt->execute()) {
-        $success=false; 
-        $message = "Couldn't upload image try again later";
-    }
-    $stmt->close();
 
     // Insert into the "All" album
     $getAllAlbumSql = "SELECT album_id FROM albums WHERE user_id = ? AND album_name = 'All' LIMIT 1";
     $stmt = $conn->prepare($getAllAlbumSql);
-    $stmt->bind_param("i", $user_id);
+    $stmt->bind_param("s", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -78,7 +68,7 @@
 
         $insertAlbumImageSql = "INSERT INTO album_image(image_id, album_id) VALUES (?, ?)";
         $stmt = $conn->prepare($insertAlbumImageSql);
-        $stmt->bind_param("ii", $image_id, $all_id);
+        $stmt->bind_param("ss", $image_id, $all_id);
 
         if (!$stmt->execute()) {
             $success=false; 
@@ -91,7 +81,7 @@
     if (isset($albums)) {
         foreach ($albums as $album_id) {
             $stmt = $conn->prepare("INSERT INTO album_image(image_id, album_id) VALUES (?, ?)");
-            $stmt->bind_param("ii", $image_id, $album_id);
+            $stmt->bind_param("ss", $image_id, $album_id);
 
             if (!$stmt->execute()) {
                 $success=false; 
@@ -104,8 +94,10 @@
     // Increment the image count for the user
     $incrementImageCountSql = "UPDATE users SET imageCount = imageCount + 1 WHERE user_id = ?";
     $stmt = $conn->prepare($incrementImageCountSql);
-    $stmt->bind_param("i", $user_id);
+    $stmt->bind_param("s", $user_id);
+    $stmt->execute();
     $stmt->close();
+    
 
     // Add the image to the directory
     $uploadDir = '../images/';

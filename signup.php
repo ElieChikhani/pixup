@@ -24,7 +24,16 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $errors['username'] = "Username is required.";
   } else {
     $username = trim(htmlspecialchars($_POST["username"]));
+
+    if(strpos($username, ' ')) {
+      $errors['username'] = "Username cannot contain spaces";
+    } 
+
   }
+  
+  
+  
+
   
   if (empty($_POST["email"])) {
     $errors['email'] = "Email is required.";
@@ -84,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 <section class="background-radial-gradient overflow-hidden">
  
 
-  <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+  <div class="container px-4 py-1 px-md-5 text-center text-lg-start my-5">
     <div class="row gx-lg-5 align-items-center mb-5">
       <div class="alltexts">
       
@@ -94,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         <div class="card bg-glass">
           <div class="card-body px-4 py-5 px-md-5">
             <form action=<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?> method="POST" novalidate>
-              <h2>Create Your Account</h2>
+              <h2>Create Your Pixup Account</h2>
               <br>
               <!-- username input -->
               <div data-mdb-input-init class="form-outline mb-4">
@@ -134,8 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
               <!-- BIO input -->
               <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label" for="form3Example4">Enter a description of yourself</label>
-                <textarea id="bio" name="bio" class="form-control">
-                <?php if(isset($bio)) echo $bio?> </textarea>
+                <textarea id="bio" name="bio" class="form-control"><?php if(isset($bio)) echo $bio?> </textarea>
               </div>
 
 

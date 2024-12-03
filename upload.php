@@ -28,7 +28,7 @@
     session_start();
 
     include 'components/header.php';
-    include 'components/signinrequired.php'
+    include 'components/signinrequired.php'; 
     ?>
 
 

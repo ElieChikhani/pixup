@@ -6,3 +6,19 @@
 .photo-gallery{
     margin:0; 
 }
+
+.save-changes {
+   
+    width:150px; 
+}
+
+#album-info-form {
+    border:dashed 2px grey; 
+    padding: 10px; 
+    margin-bottom:3%; 
+}
+
+main {
+    background-color: white;
+}
+

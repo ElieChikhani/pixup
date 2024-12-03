@@ -1,43 +1,22 @@
 <?php
 session_start();
-include '../dbModule/connectToDB.php';
+include 'dbModule/connectToDB.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userId = $_SESSION['user_id'];  
     $name = htmlspecialchars($_POST['name']);
     $description = htmlspecialchars($_POST['description']);
     
-    if (empty($name) || empty($description)) {
-        $error = "Album name and description are required.";
+    if (empty($name)) {
+        $error = "Album name is required.";
     } else {
-        $originalName = $name;
+       
+    include "dbModule/insertAlbum.php"; 
+    createAlbum($name, $description, $userId);
 
-        //checking if there is already an album with similar name add a counter to the album name for example : food(1)
-
-        $check_sql = "SELECT COUNT(*) as count FROM albums a WHERE a.album_name = ? AND a.user_id = ?"; 
-        $stmt_check = $conn->prepare($check_sql);
-        $stmt_check->bind_param("si",  $originalName,$userId);
-        $stmt_check->execute();
-        $result = $stmt_check->get_result();
-
-        if ($result->num_rows > 0 ) {
-                $counter=$result->num_rows+1;
-                $name = $originalName . "($counter)";
-        } 
-
-
-        $sql = "INSERT INTO albums (user_id, album_name, album_description) VALUES (?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iss", $userId, $name, $description);
-
-        if ($stmt->execute()) {
-            header("Location: ../gallery.php?success=Album created successfully!");
-            exit();
-        } else {
-            $error = "Failed to create album. Please try again.";
-        }
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .btn-submit:hover { background-color: #003d7a; }
         .btn-cancel { background-color: #f8d7da; color: black; }
         .btn-cancel:hover { background-color: #f5c6cb; }
-        .error-message { color: red; font-weight: bold; }
+        .error-message { color: red; font-weight: bold;margin:0 }
     </style>
 </head>
 <body>
@@ -67,15 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <main class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="display-4">Create Your Album</h1>
-        <a href="../gallery.php" class="btn btn-outline-primary">Back to Gallery</a>
+        <a href="gallery.php" class="btn btn-outline-primary">Back to Gallery</a>
     </div>
 
-    <?php if (isset($error)) echo "<p class='error-message'>$error</p>"; ?>
-
-    <form method="POST" class="bg-light p-4 rounded shadow">
+    <form method="POST" class="bg-light p-4 rounded shadow" novalidate>
         <div class="mb-3">
             <label for="name" class="form-label">Album Title:</label>
             <input type="text" id="name" name="name" class="form-control" required>
+            <?php if (isset($error)) echo "<p class='error-message'>$error</p>"; ?>
+
         </div>
 
         <div class="mb-3">
@@ -83,9 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
         </div>
 
+
         <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-submit">Create Album</button>
-            <a href="../gallery.php" class="btn btn-cancel">Cancel</a>
+            <a href="gallery.php" class="btn btn-cancel">Cancel</a>
         </div>
     </form>
 </main>

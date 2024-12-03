@@ -7,6 +7,7 @@ if(!isset($_SESSION)) session_start();
 
 $user_id = $_SESSION["user_id"]; 
 $album_id = isset($_GET['id'])?$_GET['id']:NULL;
+$album_name = isset($_GET['album_name'])?trim(htmlspecialchars($_GET['album_name'])):NULL;
 
 
 include "components/canEditAlbum.php";
@@ -38,12 +39,12 @@ if(!canEditAlbum($album_id,$user_id)){
 <body>
 
 
-    <main class="container py-5">
-        <h1 class="display-4 mb-4"> Select the images you want to add to </h1>
+    <main class="container py-2 mb-3 mt-3" style="border-radius:10px">
+        <h3 class="display-7 mb-2" style="color:"> Select the images you want to add to <?php echo$album_name ?> </h3>
 
         
 
-        <form id='search-form' selectable = true album_id_not=<?php echo htmlspecialchars($album_id); ?> user_id=<?php echo htmlspecialchars($user_id); ?>>
+        <form id='search-form' selectable = true album_id_not=<?php echo htmlspecialchars($album_id); ?> user_id=<?php echo htmlspecialchars($user_id); ?> style="background-color: white;">
 
             <input id='search-bar' class='form-control me-sm-2' type='text' placeholder='Search for photos'
                 name='search' />
@@ -59,12 +60,13 @@ if(!canEditAlbum($album_id,$user_id)){
 
         
         <div class="d-grid gap-2">
-            <button
+            <a
             id="done-button"
             class="btn btn-primary"
+            href="editAlbum.php?id=<?php echo  urlencode(htmlspecialchars($album_id)); ?>"
         >
             Done
-        </button>
+        </a>
         </div>
 
         
@@ -94,7 +96,7 @@ if(!canEditAlbum($album_id,$user_id)){
     <script src="scripts/allGridScript.js"></script>
 
     
-    <script src="scripts/addImageToAlbum.js"></script>
+    <script src="scripts/addImages.js"></script>
 
 
 </body>
