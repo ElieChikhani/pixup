@@ -9,13 +9,12 @@ main {
 #search-form {
     background-color: white;
     margin:0; 
+    padding:0;
+    position:static; 
 }
 
 #album_info {
     margin:0 2%; 
-    position:sticky; 
-    z-index:1; 
-    top:0; 
     background-color: white;
     padding: 10px; 
 }

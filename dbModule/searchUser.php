@@ -2,7 +2,7 @@
 
 include 'connectToDB.php'; 
 
-$keyword = isset($_GET['keyword']) ? trim(htmlspecialchars($_GET['keyword'])):'';
+$keyword = isset($_GET['keyword']) ? trim($_GET['keyword']):'';
 $limit = isset($_GET['limit']) ? (int)$_GET['limit']:10; 
 $current_page = isset($_GET['current_page']) ? (int)$_GET['current_page'] :1;
 

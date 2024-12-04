@@ -18,7 +18,7 @@ if(!canEditAlbum($album_id,$_SESSION['user_id'])){
 if(!empty($image_id) && !empty($album_id)) {
 include "connectToDB.php";
 $stmt = $conn->prepare("DELETE FROM album_image WHERE image_id = ? AND album_id = ?");
-$stmt->bind_param('ii', $image_id, $album_id); 
+$stmt->bind_param('ss', $image_id, $album_id); 
 
 if (!$result=$stmt->execute()) {
     $response  = [

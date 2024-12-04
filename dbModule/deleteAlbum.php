@@ -45,9 +45,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $deleteStmt->bind_param("ss", $albumId, $userId);
 
         if ($deleteStmt->execute()) {
-            $success = true; 
-            $message = "Album deleted successfully";
-            header("Location: ../gallery.php?success=$success&message=$message.");
+
+             //delete relation between the images and the deleted album
+            $delete_img_sql = "DELETE FROM album_image WHERE album_id = ?";
+            $delete_img_stmt = $conn->prepare($delete_img_sql);
+            $delete_img_stmt->bind_param("s", $albumId);
+
+            if($delete_img_stmt->execute() ) {
+                $success = true; 
+                $message = "Album deleted successfully";
+                header("Location: ../gallery.php?success=$success&message=$message.");
+            }
         } else {
             $success = false; 
             $message = "Failed to delete album";
@@ -55,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $deleteStmt->close();
         exit();
+
     }
 
     if (isset($_POST['cancel']) && $_POST['cancel'] === 'no') {

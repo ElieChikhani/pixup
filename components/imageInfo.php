@@ -70,7 +70,7 @@ if(!empty($image_id)&&$action=='open'){
     <div class='textual-content'>
         <h3 id='image-title'> $image_title </h3>
         <p id='upload-date'> Uploaded on $image_upload_date </p>
-        <a id='by' href='userprofile?user_id=$owner_id'> <i class = 'fas fa-user'> </i> $username  </a>
+        <a id='by' href='userprofile.php?user_id=$owner_id'> <i class = 'fas fa-user'> </i> $username  </a>
        
 
         <p id='description'> $image_description</p>

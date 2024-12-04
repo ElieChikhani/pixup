@@ -37,6 +37,7 @@ dropArea.addEventListener("drop",function(event){
 })
 
 
+let form_validated; 
 //letting the bottstrap javascipt show the validation of the script 
 const forms = document.querySelectorAll('.needs-validation');
 Array.from(forms).forEach(form => {
@@ -48,9 +49,10 @@ Array.from(forms).forEach(form => {
           if(!inputFile.files[0]){
             imageView.style.borderColor="#dc3545"; 
           }
-          
+        }else {
+          form_validated = true;
         }
-        form.classList.add('was-validated')
+        form.classList.add('was-validated'); 
       }, false)
 }) 
 
@@ -67,5 +69,8 @@ textArea.addEventListener("input", () => {
 
 //display loader at submit
 document.getElementById('image-upload-form').addEventListener('submit', ()=>{
+  if(form_validated){
   document.getElementsByClassName('loader-container')[0].style.display="flex";
-}); 
+  }
+});
+

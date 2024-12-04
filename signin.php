@@ -23,14 +23,14 @@ if($_SERVER['REQUEST_METHOD']==="POST"){
   if (empty($_POST["email_or_username"])) {
     $errors['email_or_username'] = "Username or Email is required.";
   } else {
-    $email_or_username= trim(htmlspecialchars($_POST["email_or_username"]));
+    $email_or_username= trim($_POST["email_or_username"]);
   }
 
 
   if (empty($_POST["password"])) {
     $errors['password'] = "Password is required";
   } else {
-    $password = trim(htmlspecialchars($_POST["password"]));
+    $password = trim($_POST["password"]);
   }
 
   if(empty($errors)){
@@ -63,7 +63,7 @@ if($_SERVER['REQUEST_METHOD']==="POST"){
               <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label" for="form3Example3">Email address or username</label>
                 <input type="text" id="email-username" name="email_or_username" class="form-control" 
-                    value = <?php if(isset($email_or_username)) echo $email_or_username?>>
+                    value = <?php if(isset($email_or_username)) echo htmlspecialchars($email_or_username)?>>
                 <div class="error-message"> <?php if(isset($errors["email_or_username"])) echo $errors["email_or_username"] ?> </div> 
               </div>
 

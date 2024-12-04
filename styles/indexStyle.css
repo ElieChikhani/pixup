@@ -40,6 +40,15 @@ body {
     margin-right:9%; 
 }
 
+@media (max-width: 576px) {
+    .welcome img  {
+        display:none; 
+    }
+    
+   
+}
+
+
 
 
 

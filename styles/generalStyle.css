@@ -14,7 +14,7 @@ header {
     position: sticky;
     top:0; 
     background-color: hsl(218, 81%, 95%) !important; 
-    z-index:1; 
+    z-index:2; 
 }
 
 .navbar .container {
@@ -46,7 +46,7 @@ header {
 
 .navbar-brand:hover {
     color: rgb(0, 0, 128);
-    color: rgb(255, 255, 255);
+   
     
 }
 
@@ -187,7 +187,6 @@ header {
     max-height:90%; 
     text-align: center;
     position: relative;
-
 }
 
 .popup-body {
@@ -217,6 +216,7 @@ header {
     background-color: #efefef9f;
     padding: 2% 2%; 
     width:100%; 
+    overflow-y: scroll;
 }
 
 .popup-body .textual-content #by{
@@ -238,7 +238,7 @@ header {
 
 .popup-body .textual-content #description{
     text-align:justify; 
-   margin:0 auto; 
+    margin:5% auto 2% auto; 
 }
 
 .popup-body .textual-content #saves{
@@ -276,7 +276,7 @@ header {
 .popup-close {
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 2%;
     background: #ff5e5e;
     color: white;
     border: none;
@@ -364,6 +364,7 @@ header {
     gap: 15px; 
     margin: 1% 0; 
     padding-left:3%; 
+    flex-wrap: wrap;
 }
 
 #suggestion-box p {
@@ -376,6 +377,7 @@ header {
 #suggestions {
     display: flex;
     gap: 10px; 
+    flex-wrap: wrap;
 }
 
 .btn.sugg {
@@ -504,6 +506,9 @@ header {
       transform: rotate(25deg)
     }
   }
+
+
+
     
 
 

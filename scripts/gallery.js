@@ -43,7 +43,6 @@ function loadAlbums() {
 
 function getUserId() { 
     const userId = sessionStorage.getItem('user_id');
-    console.log(userId);
     if (userId) {
         return userId; 
     } else {

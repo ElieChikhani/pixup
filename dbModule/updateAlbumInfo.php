@@ -30,7 +30,22 @@ if(!canEditAlbum($album_id,$_SESSION['user_id'])){
     exit(); 
 }
 
+$user_id = $_SESSION['user_id'];
 
+// Checking if there is already an album with a similar name to increase it's count
+$check_sql = "SELECT COUNT(*) as count FROM albums WHERE album_name LIKE ? AND user_id = ?";
+$stmt_check = $conn->prepare($check_sql);
+
+$searchName = $album_name . '%';
+$stmt_check->bind_param("ss", $searchName, $user_id);
+$stmt_check->execute();
+
+$result = $stmt_check->get_result()->fetch_assoc();
+
+if ($result['count'] > 0) {
+    $counter = $result['count']; 
+    $album_name = $album_name . "($counter)";
+} 
 
 $sql = "UPDATE albums SET album_name = ?, album_description = ?  WHERE album_id = ?";
 $stmt = $conn->prepare($sql);

@@ -20,7 +20,7 @@ if($result === false ){
 $data = json_decode($result, true);
 if (json_last_error() !== JSON_ERROR_NONE) {
     $error = json_last_error_msg();
-    die ("Error occured in json");
+    die ("Error occured in json".$error);
 }
 
 if($data['success']){
@@ -50,15 +50,25 @@ if($data['success']){
 </head>
 <body>
 
-<main>
+<main class="my-3">
 
     <section id="album_info">
 
-    <a href="gallery.php" class="btn btn-secondary mb-4">
-        <i class="fas fa-arrow-left"></i> Back to Gallery
-    </a>
+    <?php $previousPage = $_SERVER['HTTP_REFERER'];
+    
+    //in case he was in the dit the back should be to the gallery (it's pbsviouly the user in question)
+    if (!str_contains($previousPage, 'userprofile.php')) {
+        $previousPage = 'gallery.php'; 
+    }
+    
+    ?>
+
 
     <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href=<?php echo "$previousPage" ?> class="btn btn-secondary back-button">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+
         <h1 class="display-4"><?php echo htmlspecialchars($album['album_name']); ?></h1>
 
         <?php 
@@ -72,11 +82,11 @@ if($data['success']){
             echo "
             <div>
               <a href='editAlbum.php?id=$album_id' class='btn btn-outline-primary'>
-             <i class='fas fa-edit'></i> Edit Album  
+             <i class='fas fa-edit'></i>  
              </a>
 
              <a href='dbModule/deleteAlbum.php?id=$album_id&album_name=$name' class='btn btn-outline-danger'>
-             <i class='fas fa-trash-can'></i> Delete Album
+             <i class='fas fa-trash-can'></i>
              </a>
              </div>";
             
@@ -100,7 +110,7 @@ if($data['success']){
         <option value='popular'>Most Popular</option>
     </select>
 
-</form>
+    </form>
 
     </section>
 

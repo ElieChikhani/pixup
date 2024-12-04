@@ -96,9 +96,7 @@
                                 <div class="d-flex justify-content-between align-items-center mb-4 text-body">
                                     <p class="lead fw-normal mb-0">Albums</p>
                                 </div>
-
-                                <?php echo include 'components/albumGallery.php'; ?>
-
+                                <?php include 'components/albumGallery.php'; ?>
                             </div>
                         </div>
                     </div>

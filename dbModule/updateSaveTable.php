@@ -13,7 +13,7 @@ if (!empty($image_id)) {
 
      // Checking that the image does NOT beling to the user
      $stmt = $conn->prepare('SELECT * FROM images WHERE image_id = ? AND user_id != ?');
-    $stmt->bind_param('ii', $image_id, $user_id);
+    $stmt->bind_param('ss', $image_id, $user_id);
     $stmt->execute();
 
     $result = $stmt->get_result();
@@ -28,7 +28,7 @@ if (!empty($image_id)) {
     // Checking if the image is already saved by the user
     $check_sql = "SELECT * FROM save_image WHERE image_id = ? AND user_id = ?";
     $check_stmt = $conn->prepare($check_sql);
-    $check_stmt->bind_param("ii", $image_id, $user_id);
+    $check_stmt->bind_param("ss", $image_id, $user_id);
     $check_stmt->execute();
     $result = $check_stmt->get_result();
     
@@ -42,24 +42,24 @@ if (!empty($image_id)) {
         // Inserting into save_image
         $save_sql = "INSERT INTO save_image(image_id, user_id) VALUES (?, ?)";
         $save_stmt = $conn->prepare($save_sql);
-        $save_stmt->bind_param("ii", $image_id, $user_id);
+        $save_stmt->bind_param("ss", $image_id, $user_id);
     
         // Updating savedCount
         $update_sql = "UPDATE images SET savedCount = savedCount + 1 WHERE image_id = ?";
         $update_stmt = $conn->prepare($update_sql);
-        $update_stmt->bind_param("i", $image_id);
+        $update_stmt->bind_param("s", $image_id);
     
         $action = 'saved';
     } else {
         // Deleting from save_image
         $save_sql = "DELETE FROM save_image WHERE image_id = ? AND user_id = ?";
         $save_stmt = $conn->prepare($save_sql);
-        $save_stmt->bind_param("ii", $image_id, $user_id);
+        $save_stmt->bind_param("ss", $image_id, $user_id);
     
         // Updating savedCount
         $update_sql = "UPDATE images SET savedCount = savedCount - 1 WHERE image_id = ?";
         $update_stmt = $conn->prepare($update_sql);
-        $update_stmt->bind_param("i", $image_id);
+        $update_stmt->bind_param("s", $image_id);
     
         $action = 'unsaved';
     }

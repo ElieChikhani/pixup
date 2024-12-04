@@ -9,8 +9,6 @@ if (!isset($_GET['id'])) {
 
 $album_id = $_GET['id'];
 
-//storring the current album into the session to securly process any edit action 
-$_SESSION['current_album_id'] = $album_id;
 
 include "components/canEditAlbum.php";
 
@@ -70,11 +68,7 @@ if ($data['success']) {
 
 <body>
 
-    <main class="container py-5">
-
-    <a href="gallery.php" class="btn btn-secondary mb-4">
-        <i class="fas fa-arrow-left"></i> Back to Gallery
-    </a>
+    <main class="container py-2">
 
     <?php
     if(isset($_GET['message'])&&isset($_GET['success'])&&!empty($_GET['message'])&&!empty($_GET['message'])) {
@@ -94,13 +88,17 @@ if ($data['success']) {
 
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="display-4">Edit Album</h1>
-    </div>
+        <h2 class="display-4">Edit Album</h2>
+        <a href=<?php echo "viewAlbum.php?id=$album_id" ?> class="btn btn-primary">
+         Done </a>
+   
+        </div>
 
 
         <form method="POST" action = "dbModule/updateAlbumInfo.php"  id="album-info-form" novalidate>
 
-        <h3 class="display-6"> Album Info :  </h3>
+       
+            <h3 class="display-6"> Album Info :  </h3>
 
             <!-- Hidden to be submitted # -->
              <input type="text" name = "album_id" value="<?php echo htmlspecialchars($album_id); ?>" hidden> 

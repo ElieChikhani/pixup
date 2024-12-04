@@ -38,10 +38,23 @@ if(!canEditAlbum($album_id,$user_id)){
 
 <body>
 
+     <style>
+        .photo-gallery {
+            overflow-y: scroll;
+            min-height:80%; 
+            max-height:80%; 
+        }
 
-    <main class="container py-2 mb-3 mt-3" style="border-radius:10px">
-        <h3 class="display-7 mb-2" style="color:"> Select the images you want to add to <?php echo$album_name ?> </h3>
 
+     </style>
+
+
+    <main class="container py-2 mb-3 mt-3" style="border-radius:10px; height:95vh">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="display-7 mb-2"> Select the images you want to add to <?php echo$album_name ?> </h3>
+            <a id="done-button" class="btn btn-primary" href="editAlbum.php?id=<?php echo  urlencode(htmlspecialchars($album_id));?>">Done</a>
+        </div>
         
 
         <form id='search-form' selectable = true album_id_not=<?php echo htmlspecialchars($album_id); ?> user_id=<?php echo htmlspecialchars($user_id); ?> style="background-color: white;">
@@ -57,22 +70,7 @@ if(!canEditAlbum($album_id,$user_id)){
         </form>
 
         <?php include "components/imageGrid.php" ?>
-
         
-        <div class="d-grid gap-2">
-            <a
-            id="done-button"
-            class="btn btn-primary"
-            href="editAlbum.php?id=<?php echo  urlencode(htmlspecialchars($album_id)); ?>"
-        >
-            Done
-        </a>
-        </div>
-
-        
-
-
-
     </main>
 
 

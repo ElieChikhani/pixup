@@ -1,6 +1,7 @@
 #search-form {
     position:static; 
     padding:0; 
+    background-color: white;
 }
 
 .photo-gallery{
@@ -20,5 +21,7 @@
 
 main {
     background-color: white;
+    margin: 2% auto; 
+    border-radius:10px; 
 }
 

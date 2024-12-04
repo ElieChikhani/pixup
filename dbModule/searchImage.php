@@ -16,9 +16,9 @@ $types = ""; // parameters type
 $values = []; // parameter values
 
 // From where the data is retrieved
-$album_id = isset($_GET['album_id']) ? (int)$_GET['album_id'] : null;
-$album_id_not = isset($_GET['album_id_not']) ? (int)$_GET['album_id_not'] : null;
-$user_id = isset($_GET['user_id']) ? (int)$_GET['user_id'] : null;
+$album_id = isset($_GET['album_id']) ? $_GET['album_id'] : null;
+$album_id_not = isset($_GET['album_id_not']) ? $_GET['album_id_not'] : null;
+$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : null;
 $saved = isset($_GET['saved']) ? (bool)$_GET['saved'] : false; //must come with userID
 $keyword = isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : null;
 $order = isset($_GET['order']) ? trim(htmlspecialchars($_GET['order'])) : 'recent';
@@ -87,13 +87,13 @@ if (!empty($filter)) {
 if (!empty($album_id)) {
     $albumJoin = " NATURAL JOIN album_image a ";
     $conditions[] = "a.album_id = ?";
-    $types .= "i";
+    $types .= "s";
     $values[] = $album_id;
 }
 
 if (!empty($album_id_not)) {
     $conditions[] = "(i.image_id NOT IN (SELECT image_id FROM album_image WHERE album_id = ?))";
-    $types .= "i";
+    $types .= "s";
     $values[] = $album_id_not;
 }
 
@@ -101,11 +101,11 @@ if (!empty($user_id)) {
     if ($saved) {
         $savedJoin = " JOIN save_image s ON i.image_id = s.image_id "; //not natural because we need to precise that the join must be on the image id and NOT the user id
         $conditions[] = "s.user_id = ?"; //image saved by this user not belonging to the user
-        $types .= "i";
+        $types .= "s";
         $values[] = $user_id;
     } else {
         $conditions[] = "i.user_id = ?";
-        $types .= "i";
+        $types .= "s";
         $values[] = $user_id;
     }
 }
@@ -121,7 +121,7 @@ if (!empty($conditions)) {
 //Setting the ORDER BY clause
 $orderBy = '';
 if ($order == 'recent') {
-    $orderBy = " ORDER BY i.image_id DESC";
+    $orderBy = " ORDER BY i.upload_date DESC";
 } elseif($order == 'popular') {
     $orderBy = " ORDER BY savedCount DESC";
 }
