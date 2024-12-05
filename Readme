@@ -1,0 +1,17 @@
+PIXUP BY ELIE CHIKHANI, JOSEE AL ASMAR AND CLARA REZKALLAH
+
+This is the local version of our website (treated as a betta version). 
+
+Import the mysql file into phpmyadmin locally (after creating a database called pixup) to get the database containing 2 test accounts. 
+
+
+All modules outside any folder represent all the pages seen by the user. 
+
+The components files, contain all elements and componenets being reused in many pages 
+The dbModule file contains all the algorthims that requires a connection with the database. 
+
+
+REMARKS : 
+Even if the website is running locally, having a good internet crucial to run the categorizing API and the javascript libraries ! 
+The categorizing API immagga might fail sometime categorzing images (since we are using the free version) , the image will be uploaded anyway without categories. 
+

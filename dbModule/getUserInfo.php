@@ -2,7 +2,7 @@
 
 
 //all the info of a user (except the password)
-$user_id = isset($_GET['user_id']) ? (int)$_GET['user_id'] : null;
+$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : null;
 
 include 'connectToDB.php';
 
@@ -12,7 +12,7 @@ $stmt = $conn->prepare($sql);
 $user_info = array(); 
 
 if ($stmt) {
-    $stmt->bind_param("i", $user_id); 
+    $stmt->bind_param("s", $user_id); 
     $stmt->execute();
     $result = $stmt->get_result();
     

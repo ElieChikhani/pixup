@@ -87,21 +87,14 @@ function handleImageDelete() {
     .then((data) => {
 
       if(data.success){
-        let currentUrl = window.location.href;
-        let success = true; 
-        let message = "Image deleted succefully"; 
-        let url = currentUrl+`?success=${encodeURIComponent(success)}&message=${encodeURIComponent(message)}`; 
-        window.open(url);
-        
+        handlePopupClosure(current_popup);
+        submitSearchForm();
       }
       
     })
     .catch((error) => {
       console.error("An error occurred:", error);
     });
-
-  handlePopupClosure(current_popup);
-  submitSearchForm();
 }
 
 function handlePopupClosure(popup) {

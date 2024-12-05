@@ -52,6 +52,10 @@ if($data['success']){
 
 <main class="my-3">
 
+<div class="loader-container">
+        <div class="loader"></div>
+    </div>
+
     <section id="album_info">
 
     <?php $previousPage = $_SERVER['HTTP_REFERER'];

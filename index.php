@@ -18,7 +18,7 @@
        <link href="styles/indexStyle.css" rel="stylesheet" />
 </head>
 
-<body>
+<body> 
 
     <?php  
 

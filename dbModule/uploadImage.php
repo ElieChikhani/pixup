@@ -105,8 +105,8 @@
     $destPath = $uploadDir . $newFileName;
 
     if (move_uploaded_file($fileTmpPath, $destPath)) {
-         // Categorize the image
-        include 'categoriesImage.php';
+     // Categorize the image
+       include 'categoriesImage.php';
     } else {
        $success=false; 
        $message = "Coun't categorize the image !";

@@ -97,7 +97,7 @@ function fetchUsers(url){
 
 }
 
-//displaying images as user scrolls down 
+//displaying users as user scrolls down 
 window.addEventListener('scroll', () => {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100 && !first_render) { //near the bottom of page
         current_page++;
