@@ -12,6 +12,6 @@ The dbModule file contains all the algorthims that requires a connection with th
 
 
 REMARKS : 
-Even if the website is running locally, having a good internet crucial to run the categorizing API and the javascript libraries ! 
-The categorizing API immagga might fail sometime categorzing images (since we are using the free version) , the image will be uploaded anyway without categories. 
+Even if the website is running locally, having a good internet is crucial to run the categorizing API and the javascript libraries ! 
+The categorizing API imagga might fail sometimes categorzing an image (since we are using the free version) , in this case the image will be uploaded anyway without categories. 
 
